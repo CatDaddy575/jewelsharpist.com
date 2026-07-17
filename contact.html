@@ -470,28 +470,76 @@
 
         const contactForm = document.getElementById('contactForm');
         const successMessage = document.getElementById('successMessage');
+        const submitButton = document.querySelector('.submit-button');
+        const MAX_SUBMISSIONS_PER_TYPE_PER_DAY = 3;
+
+        function getSubmissionKey(email, eventType) {
+            return `submission_${email}_${eventType}`;
+        }
+
+        function getSubmissionCount(email, eventType) {
+            const key = getSubmissionKey(email, eventType);
+            const stored = localStorage.getItem(key);
+            if (!stored) return 0;
+
+            const data = JSON.parse(stored);
+            const now = new Date().getTime();
+            const oneDayMs = 24 * 60 * 60 * 1000;
+
+            if (now - data.timestamp > oneDayMs) {
+                localStorage.removeItem(key);
+                return 0;
+            }
+            return data.count;
+        }
+
+        function incrementSubmissionCount(email, eventType) {
+            const key = getSubmissionKey(email, eventType);
+            const now = new Date().getTime();
+            const currentCount = getSubmissionCount(email, eventType);
+            localStorage.setItem(key, JSON.stringify({ count: currentCount + 1, timestamp: now }));
+        }
 
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
+            const email = document.getElementById('email').value;
+            const eventType = document.getElementById('eventType').value;
+            const count = getSubmissionCount(email, eventType);
+
+            if (count >= MAX_SUBMISSIONS_PER_TYPE_PER_DAY) {
+                alert(`You've reached the limit of ${MAX_SUBMISSIONS_PER_TYPE_PER_DAY} submissions for ${eventType} events today. Please try again tomorrow.`);
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+
             const formData = {
                 name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
+                email: email,
                 phone: document.getElementById('phone').value,
-                eventType: document.getElementById('eventType').value,
+                eventType: eventType,
                 eventDate: document.getElementById('eventDate').value,
                 message: document.getElementById('message').value
             };
 
             emailjs.send('service_eq6hqtn', 'template_djludo6', formData)
                 .then(function(response) {
+                    incrementSubmissionCount(email, eventType);
                     successMessage.classList.add('show');
                     contactForm.reset();
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Inquiry Submitted';
                     setTimeout(function() {
                         successMessage.classList.remove('show');
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Submit Inquiry';
                     }, 5000);
                 })
                 .catch(function(error) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Submit Inquiry';
                     alert('Error sending message: ' + error.text);
                 });
         });
