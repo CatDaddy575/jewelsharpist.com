@@ -13,17 +13,19 @@
 - Added success message and submit button feedback (disabled after submission)
 
 ## NOW
-- **TESTING:** Contact form end-to-end verification in progress
-  - EmailJS Gmail OAuth has been re-authorized with proper scopes
-  - Service successfully shows: "Connected as jewelsharpist@gmail.com"
-  - Test emails are being delivered to jewel sharpist@gmail.com inbox
-  - Form submissions showing OK status in EmailJS Email History
-  - Template (template_djludo6) confirmed working with "Contact Us" email type
+- **CRITICAL: Fix Gmail OAuth token expiration issue**
+  - Root cause: OAuth tokens expire after ~30 minutes with no refresh mechanism
+  - EmailJS free tier doesn't support automatic token refresh
+  - Proof of working system: 5:00 PM email delivery successful
+  - Proof of failure: Subsequent form submissions fail 30+ mins later with 404 errors
+  - Solution in progress: Switching to app-specific password instead of OAuth (Option 1)
+  - See EMAILJS_FIX_PLAN.md for detailed investigation
 
 ## NEXT
-- Verify auto-forwarding from jewelsharpist@gmail.com to mfollis82@gmail.com is working
-- Set up Google Analytics for traffic monitoring
-- Optional: Add automated response emails to form submitters
-- Optional: Add CAPTCHA or honeypot for spam prevention
-- Optional: Implement server-side rate limiting (if needed across browsers)
+- Once Option 1 (app password) is implemented and tested:
+  - Verify auto-forwarding from jewelsharpist@gmail.com to mfollis82@gmail.com is working
+  - Set up Google Analytics for traffic monitoring
+  - Optional: Add automated response emails to form submitters
+  - Optional: Add CAPTCHA or honeypot for spam prevention
+  - Optional: Implement server-side rate limiting (if needed across browsers)
 
