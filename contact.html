@@ -464,20 +464,24 @@
         </div>
     </footer>
 
-    <script src="https://unpkg.com/emailjs-com@3/dist/email.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        console.log('Script loading...');
-        console.log('jQuery loaded:', typeof window.jQuery !== 'undefined' ? 'YES' : 'NO');
-        console.log('EmailJS loaded:', typeof window.emailjs !== 'undefined' ? 'YES' : 'NO');
+        // Dynamically load EmailJS library
+        fetch('https://unpkg.com/emailjs-com@3/dist/email.min.js')
+            .then(response => response.text())
+            .then(code => {
+                eval(code);
+                console.log('EmailJS loaded dynamically');
+                // Initialize EmailJS after loading
+                try {
+                    emailjs.init('bN-_qy9sX1mVCvdqz');
+                    console.log('EmailJS initialized successfully');
+                } catch (error) {
+                    console.error('EmailJS init failed:', error);
+                }
+            })
+            .catch(error => console.error('Failed to load EmailJS:', error));
 
-        // Initialize EmailJS
-        try {
-            emailjs.init('bN-_qy9sX1mVCvdqz');
-            console.log('EmailJS initialized successfully');
-        } catch (error) {
-            console.error('EmailJS init failed:', error);
-        }
+        console.log('Script loading...');
 
         const contactForm = document.getElementById('contactForm');
         const successMessage = document.getElementById('successMessage');
