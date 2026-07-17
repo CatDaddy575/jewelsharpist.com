@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | Jewels Harpist | Professional Harp Music</title>
+    <meta name="description" content="Professional harp music services for weddings, corporate events, and memorials. Pricing and detailed service information.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2a2a2a;
+            --accent: #1e4d3f;
+            --accent-light: #d4af37;
+            --dark: #2a2a2a;
+            --light: #f8f8f8;
+            --text: #2a2a2a;
+            --border: #e8e8e8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: white;
+        }
+
+        /* Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.99);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.3s;
+            text-transform: uppercase;
+        }
+
+        nav a:hover {
+            color: var(--accent-light);
+        }
+
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 2px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .cta-button:hover {
+            background: var(--accent);
+            color: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
+            padding: 5rem 2rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Services Grid */
+        .services-detailed {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .services-detailed-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .service-item {
+            margin-bottom: 4rem;
+            padding: 3rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-light);
+            border-radius: 0;
+        }
+
+        .service-item h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .service-item p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .pricing-box {
+            background: #fafafa;
+            padding: 2rem;
+            border-radius: 0;
+            margin: 2rem 0;
+            border-left: 3px solid var(--accent-light);
+        }
+
+        .pricing-box h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .price-item:last-child {
+            border-bottom: none;
+        }
+
+        .price-label {
+            color: #666;
+        }
+
+        .price-amount {
+            color: var(--accent-light);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .features-list {
+            background: #fafafa;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 0;
+        }
+
+        .features-list h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .features-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .features-list li {
+            padding: 0.6rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #666;
+        }
+
+        .features-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-light);
+            font-weight: bold;
+        }
+
+        .quote-button {
+            background: var(--accent);
+            color: white;
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 2px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+            margin-top: 1.5rem;
+        }
+
+        .quote-button:hover {
+            background: var(--accent-light);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: #004225;
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .cta-section p {
+            font-size: 1.05rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .cta-section button {
+            background: var(--accent-light);
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .cta-section button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            background: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #00331d;
+            color: white;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.2rem;
+            color: var(--accent-light);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .footer-section p {
+            opacity: 0.75;
+            line-height: 1.8;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .service-item {
+                padding: 2rem;
+            }
+
+            nav ul {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Jewels Harpist</a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="cta-button">Book Now</button>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Professional Performance Services</h1>
+        <p>Explore our comprehensive harp music services for every occasion</p>
+    </section>
+
+    <!-- Services Details -->
+    <section class="services-detailed">
+        <div class="services-detailed-container">
+            <div class="service-item">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-bottom: 2rem;">
+                    <div>
+                        <h2>Weddings & Engagements</h2>
+                        <p>Your wedding day deserves music as beautiful and meaningful as your love story. Julia White brings sophistication and elegance to every moment—from the ceremony's first notes to the reception's final song. Each performance is personalized to reflect your unique vision and musical preferences.</p>
+                    </div>
+                    <img src="content/photos/IMG_1161.JPEG" alt="Julia performing at wedding" style="width: 100%; border-radius: 0; box-shadow: 0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+
+                <div class="pricing-box">
+                    <h3>Wedding Pricing</h3>
+                    <div class="price-item">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-amount">$425</span>
+                    </div>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Request a quote to discuss your event's specific needs and get customized pricing.</p>
+                </div>
+
+                <div class="features-list">
+                    <h3>What's Included</h3>
+                    <ul>
+                        <li>Professional setup and sound check</li>
+                        <li>Expertly curated repertoire that enhances your special moment</li>
+                        <li>Full ceremony or cocktail hour performance</li>
+                        <li>Travel within Savannah area</li>
+                        <li>Professional attire and appearance</li>
+                    </ul>
+                </div>
+
+                <a href="contact.html" class="quote-button">Request a Quote</a>
+            </div>
+
+            <div class="service-item">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-bottom: 2rem;">
+                    <div>
+                        <h2>Corporate Events & Galas</h2>
+                        <p>Elevate your business gathering with the sophistication of live harp music. Whether it's a client appreciation event, gala, conference, or company celebration, Julia's refined performances create an upscale atmosphere that impresses attendees and enhances your event's prestige.</p>
+                    </div>
+                    <img src="content/photos/IMG_0514.JPEG" alt="Julia performing at corporate event" style="width: 100%; border-radius: 0; box-shadow: 0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+
+                <div class="pricing-box">
+                    <h3>Corporate Pricing</h3>
+                    <div class="price-item">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-amount">$350</span>
+                    </div>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Request a quote to discuss your event's specific needs and get customized pricing.</p>
+                </div>
+
+                <div class="features-list">
+                    <h3>What's Included</h3>
+                    <ul>
+                        <li>Professional setup and technical coordination</li>
+                        <li>Cocktail hour or event background music</li>
+                        <li>Repertoire tailored to event atmosphere</li>
+                        <li>On-site coordination and flexibility</li>
+                        <li>Professional appearance and demeanor</li>
+                    </ul>
+                </div>
+
+                <a href="contact.html" class="quote-button">Request a Quote</a>
+            </div>
+
+            <div class="service-item">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-bottom: 2rem;">
+                    <div>
+                        <h2>Memorials & Celebrations of Life</h2>
+                        <p>Music has the power to comfort, honor, and celebrate. Julia provides compassionate, graceful harp performances for funerals, memorial services, and celebrations of life. Her serene artistry creates a peaceful atmosphere while honoring your loved one's memory.</p>
+                    </div>
+                    <img src="content/photos/IMG_5408.JPEG" alt="Julia performing elegant harp music" style="width: 100%; border-radius: 0; box-shadow: 0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+
+                <div class="pricing-box">
+                    <h3>Memorial Pricing</h3>
+                    <div class="price-item">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-amount">$350</span>
+                    </div>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Request a quote to discuss your event's specific needs and get customized pricing.</p>
+                </div>
+
+                <div class="features-list">
+                    <h3>What's Included</h3>
+                    <ul>
+                        <li>Professional setup and arrangement</li>
+                        <li>Classical and meaningful song selections</li>
+                        <li>Flexible timing for ceremony flow</li>
+                        <li>Compassionate, respectful service</li>
+                        <li>Personal coordination with your family</li>
+                    </ul>
+                </div>
+
+                <a href="contact.html" class="quote-button">Request a Quote</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Let's Create Something Extraordinary</h2>
+        <p>Reach out to schedule a private consultation and explore how Julia's artistry can perfectly complement your occasion</p>
+        <button onclick="window.location.href='contact.html'">Schedule a Consultation</button>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Jewels Harpist</h4>
+                <p>Professional harp music for weddings, corporate events, and celebrations in Savannah, GA.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Services</h4>
+                <p>• Weddings<br>• Corporate Events<br>• Memorials<br>• Private Celebrations</p>
+            </div>
+            <div class="footer-section">
+                <h4>Get In Touch</h4>
+                <p>Phone: (706) 247-2919<br>Email: jewelsharpist@gmail.com<br>Location: Savannah, GA</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Jewels Harpist. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

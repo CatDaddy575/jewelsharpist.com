@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials | Jewels Harpist | Client Reviews</title>
+    <meta name="description" content="Read what clients say about Julia White's professional harp performances for weddings, corporate events, and celebrations.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2a2a2a;
+            --accent: #1e4d3f;
+            --accent-light: #d4af37;
+            --dark: #2a2a2a;
+            --light: #f8f8f8;
+            --text: #2a2a2a;
+            --border: #e8e8e8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: white;
+        }
+
+        /* Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.99);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.3s;
+            text-transform: uppercase;
+        }
+
+        nav a:hover {
+            color: var(--accent-light);
+        }
+
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 2px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .cta-button:hover {
+            background: var(--accent);
+            color: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
+            padding: 5rem 2rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Testimonials Section */
+        .testimonials-section {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .testimonials-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .rating-summary {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: #fafafa;
+            border-radius: 0;
+        }
+
+        .rating-summary .stars {
+            color: var(--accent-light);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .rating-summary .rating-number {
+            font-size: 3rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-summary .review-count {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2.8rem;
+            border-radius: 0;
+            border-left: 3px solid var(--accent-light);
+            animation: fadeInUp 0.6s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-light);
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transform: translateY(-5px);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        .testimonial-info h3 {
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .testimonial-info .event-type {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .stars {
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .testimonial-date {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: #004225;
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .cta-section p {
+            font-size: 1.05rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .cta-section button {
+            background: var(--accent-light);
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .cta-section button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            background: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #00331d;
+            color: white;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.2rem;
+            color: var(--accent-light);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .footer-section p {
+            opacity: 0.75;
+            line-height: 1.8;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Jewels Harpist</a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="cta-button">Book Now</button>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Client Testimonials</h1>
+        <p>Hear from couples and event hosts who've experienced Julia's artistry</p>
+    </section>
+
+    <!-- Rating Summary -->
+    <section class="testimonials-section">
+        <div class="testimonials-container">
+            <div class="rating-summary">
+                <div class="stars">★★★★★</div>
+                <div class="rating-number">5.0</div>
+                <div class="review-count">5 verified reviews from satisfied clients</div>
+            </div>
+
+            <!-- Testimonials Grid -->
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">M</div>
+                        <div class="testimonial-info">
+                            <h3>Molly Cohen</h3>
+                            <div class="event-type">Wedding</div>
+                        </div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <p>"Julia is incredibly talented and truly brings something special to every performance. Her ability to play both the harp and piano is beautiful to experience, and she creates such an elegant, calming atmosphere. She is professional and a joy to work with."</p>
+                    <div class="testimonial-date">2 months ago</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">D</div>
+                        <div class="testimonial-info">
+                            <h3>Daniel Kalina</h3>
+                            <div class="event-type">Wedding</div>
+                        </div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <p>"We hired Julia, a professional wedding harpist, and it was one of the best decisions we made for our wedding. Her live harp music created an elegant, romantic atmosphere during the ceremony and cocktail hour that people are still talking about."</p>
+                    <div class="testimonial-date">2 months ago</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">E</div>
+                        <div class="testimonial-info">
+                            <h3>Elliott Rudolphi</h3>
+                            <div class="event-type">Event</div>
+                        </div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <p>"Julia is the best! Was easy to book, arrived on time, and performed beautifully. Could not recommend more. Thank you!"</p>
+                    <div class="testimonial-date">2 months ago</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">J</div>
+                        <div class="testimonial-info">
+                            <h3>Jeremy Huggins</h3>
+                            <div class="event-type">Gathering</div>
+                        </div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <p>"Julia is incredibly talented on both harp and piano. She played at a gathering I hosted, and it completely changed the feel of the room in the best way. People noticed. It added a level of atmosphere you don't get from just a playlist. She was easy to coordinate with, showed up prepared, and handled everything professionally before and after the event. If you're hosting a wedding or social gathering and want something that actually elevates the experience, she's a great choice."</p>
+                    <div class="testimonial-date">2 months ago</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">A</div>
+                        <div class="testimonial-info">
+                            <h3>Andrew Todd</h3>
+                            <div class="event-type">Business Dinner</div>
+                        </div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <p>"We had Jewels play harp at a business dinner and it honestly made the night. The vibe was just right, relaxed but still felt nice and put together. It wasn't just background music either, it actually added to the whole experience. A couple people even asked about her while she was playing. Super easy to work with and everything went smooth. Definitely recommend her if you want to make an event feel a little more special."</p>
+                    <div class="testimonial-date">2 months ago</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Let's Create Something Extraordinary</h2>
+        <p>Reach out to schedule a private consultation and explore how Julia's artistry can perfectly complement your occasion</p>
+        <button onclick="window.location.href='contact.html'">Schedule a Consultation</button>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Jewels Harpist</h4>
+                <p>Professional harp music for weddings, corporate events, and celebrations in Savannah, GA.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Services</h4>
+                <p>• Weddings<br>• Corporate Events<br>• Memorials<br>• Private Celebrations</p>
+            </div>
+            <div class="footer-section">
+                <h4>Get In Touch</h4>
+                <p>Phone: (706) 247-2919<br>Email: jewelsharpist@gmail.com<br>Location: Savannah, GA</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Jewels Harpist. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

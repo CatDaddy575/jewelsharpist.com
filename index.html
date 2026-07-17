@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jewels Harpist | Julia White - Professional Harp Music for Events</title>
+    <meta name="description" content="Professional harpist Julia White provides elegant live harp music for weddings, corporate events, funerals, and celebrations in Savannah, GA and beyond.">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Jewels Harpist",
+      "image": "https://jewelsharpist.com/content/photos/IMG_4319.JPG",
+      "description": "Professional harp music services for weddings, corporate events, memorials, and celebrations in Savannah, GA",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Savannah",
+        "addressRegion": "GA",
+        "addressCountry": "US"
+      },
+      "telephone": "(706) 247-2919",
+      "email": "jewelsharpist@gmail.com",
+      "priceRange": "$350-$425",
+      "sameAs": [],
+      "serviceArea": {
+        "@type": "State",
+        "name": "Georgia"
+      }
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2a2a2a;
+            --accent: #1e4d3f;
+            --accent-light: #d4af37;
+            --dark: #2a2a2a;
+            --light: #f8f8f8;
+            --text: #2a2a2a;
+            --border: #e8e8e8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: white;
+        }
+
+        /* Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.99);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.3s;
+            text-transform: uppercase;
+        }
+
+        nav a:hover {
+            color: var(--accent-light);
+        }
+
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 2px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .cta-button:hover {
+            background: var(--accent);
+            color: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
+            overflow: visible;
+            display: flex;
+            align-items: center;
+            animation: none !important;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            width: 100%;
+            animation: none !important;
+            align-items: center;
+        }
+
+        .hero-text {
+            animation: none !important;
+        }
+
+        .hero-text {
+            position: relative;
+            padding-left: 0;
+            max-width: 600px;
+        }
+
+        .hero-text::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 0px;
+            width: 0px;
+            background: #004225;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            word-spacing: 0.05em;
+            max-width: 700px;
+        }
+
+        .hero-text p {
+            font-size: 1.05rem;
+            color: #666;
+            margin-bottom: 2.8rem;
+            animation: fadeInUp 0.8s ease 0.3s backwards;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.4s backwards;
+        }
+
+        .hero-buttons button {
+            padding: 1rem 2.2rem;
+            font-size: 0.85rem;
+            border-radius: 2px;
+            border: 2px solid var(--primary);
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .hero-buttons button.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .hero-buttons button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--accent-light);
+        }
+
+        .hero-image {
+            position: relative;
+            animation: slideInRight 1s ease 0.2s forwards;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 0px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .accent-shape {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            background: #004225;
+            border-radius: 50%;
+            opacity: 0.15;
+            top: 60px;
+            right: -100px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .services-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 4rem;
+            font-weight: 400;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 0px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border-left: 3px solid var(--accent-light);
+            animation: fadeInUp 0.6s ease;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-light);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .service-card p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            color: var(--accent-light);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 6rem 2rem;
+            background: #fafafa;
+        }
+
+        .testimonials-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2.8rem;
+            border-radius: 0px;
+            border-left: 3px solid var(--accent-light);
+            animation: fadeInUp 0.6s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-light);
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.85rem;
+            letter-spacing: 0.2px;
+        }
+
+        .stars {
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: #004225;
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .cta-section p {
+            font-size: 1.05rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .cta-section button {
+            background: var(--accent-light);
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .cta-section button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            background: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #00331d;
+            color: white;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.2rem;
+            color: var(--accent-light);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .footer-section p {
+            opacity: 0.75;
+            line-height: 1.8;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUpText {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes wordFadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-text h1 span {
+            display: inline-block;
+            margin-right: 0.1em;
+        }
+
+
+        .hero-text h1:hover span {
+            color: #004225;
+            transition: all 0.3s ease;
+        }
+
+        .hero-text h1:hover {
+            cursor: pointer;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 1;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Jewels Harpist</a>
+            <ul>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="cta-button" onclick="window.location.href='contact.html'">Book Now</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="accent-shape"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Live Harp Music.<br>Timeless Elegance.</h1>
+                <p>Professional performances for weddings, corporate events, and celebrations.</p>
+                <div class="hero-buttons">
+                    <button class="cta-button" onclick="window.location.href='contact.html'">Book Now</button>
+                    <button class="secondary" onclick="window.location.href='services.html'">Explore Services</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="content/photos/IMG_4319.JPG" alt="Julia White performing on harp">
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="services-container">
+            <h2 class="section-title">Professional Performance Services</h2>
+            <p class="section-subtitle">Curated experiences for weddings, corporate events, and celebrations</p>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Weddings</h3>
+                    <p>Create an unforgettable atmosphere with live harp music for your ceremony, cocktail hour, or reception. Each performance is meticulously tailored to your vision and musical preferences.</p>
+                    <div class="price">Starting at $425</div>
+                </div>
+
+                <div class="service-card">
+                    <h3>Corporate Events</h3>
+                    <p>Elevate your gala, conference, client entertainment, or company celebration with sophisticated live harp music. Professional performance that sets your event apart.</p>
+                    <div class="price">Starting at $350</div>
+                </div>
+
+                <div class="service-card">
+                    <h3>Memorials & Funerals</h3>
+                    <p>Bring grace and compassion to celebrations of life with serene, comforting harp music. A meaningful tribute that honors and celebrates your loved one.</p>
+                    <div class="price">Starting at $350</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="testimonials-container">
+            <h2 class="section-title">Client Testimonials</h2>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Julia is incredibly talented and truly brings something special to every performance. Her ability to play both the harp and piano is beautiful to experience, and she creates such an elegant, calming atmosphere. She is professional and a joy to work with."</p>
+                    <div class="testimonial-author">— Molly Cohen, Wedding</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"We hired Julia, a professional wedding harpist, and it was one of the best decisions we made for our wedding. Her live harp music created an elegant, romantic atmosphere during the ceremony and cocktail hour that people are still talking about."</p>
+                    <div class="testimonial-author">— Daniel Kalina, Wedding</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Julia is the best! Was easy to book, arrived on time, and performed beautifully. Could not recommend more. Thank you!"</p>
+                    <div class="testimonial-author">— Elliott Rudolphi, Corporate Event</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <h2>Let's Create Something Extraordinary</h2>
+        <p>Reach out to schedule a private consultation and explore how Julia's artistry can perfectly complement your occasion</p>
+        <button onclick="window.location.href='contact.html'">Schedule a Consultation</button>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Jewels Harpist</h4>
+                <p>Professional harp music for weddings, corporate events, and celebrations in Savannah, GA.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Services</h4>
+                <p>• Weddings<br>• Corporate Events<br>• Memorials<br>• Private Celebrations</p>
+            </div>
+            <div class="footer-section">
+                <h4>Get In Touch</h4>
+                <p>Phone: (706) 247-2919<br>Email: jewelsharpist@gmail.com<br>Location: Savannah, GA</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Jewels Harpist. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add scroll animation for elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.service-card, .testimonial-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Book Now button
+        document.querySelectorAll('.cta-button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (this.textContent === 'Book Now') {
+                    alert('Booking form coming soon! For now, please contact Julia at jewelsharpist@gmail.com or (706) 247-2919');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
