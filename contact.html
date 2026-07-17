@@ -508,7 +508,8 @@
 
                 emailjs.send('service_eq6hqtn', 'template_djludo6', formData)
                     .then(function(response) {
-                        console.log('Email sent successfully:', response);
+                        console.log('✓ Email sent successfully!', response);
+                        console.log('Response status:', response.status);
                         successMessage.classList.add('show');
                         contactForm.reset();
                         submitButton.textContent = 'Inquiry Submitted';
@@ -519,10 +520,14 @@
                         }, 5000);
                     })
                     .catch(function(error) {
-                        console.error('Email send failed:', error);
+                        console.error('✗ Email send failed!');
+                        console.error('Error details:', JSON.stringify(error, null, 2));
+                        console.error('Error text:', error.text);
+                        console.error('Error message:', error.message);
+                        console.error('Error status:', error.status);
                         submitButton.disabled = false;
                         submitButton.textContent = 'Submit Inquiry';
-                        alert('Error sending message: ' + (error.text || error.message || 'Unknown error'));
+                        alert('Error sending message: ' + (error.text || error.message || JSON.stringify(error)));
                     });
             });
         } else {
