@@ -13,13 +13,12 @@
 - Added success message and submit button feedback (disabled after submission)
 
 ## NOW
-- **CRITICAL: Fix Gmail OAuth token expiration issue**
-  - Root cause: OAuth tokens expire after ~30 minutes with no refresh mechanism
-  - EmailJS free tier doesn't support automatic token refresh
-  - Proof of working system: 5:00 PM email delivery successful
-  - Proof of failure: Subsequent form submissions fail 30+ mins later with 404 errors
-  - Solution in progress: Switching to app-specific password instead of OAuth (Option 1)
-  - See EMAILJS_FIX_PLAN.md for detailed investigation
+- **INVESTIGATION COMPLETE: Awaiting decision on email solution**
+  - Root cause confirmed: OAuth tokens expire with no refresh in EmailJS free tier
+  - All solutions evaluated (see EMAILJS_FIX_PLAN.md and WORK_SUMMARY.md)
+  - RECOMMENDATION: Switch to Formspree (no tokens, no auth, 100% reliable)
+  - Alternative: Enable 2FA for app passwords (user action required)
+  - Ready to implement chosen solution
 
 ## NEXT
 - Once Option 1 (app password) is implemented and tested:
