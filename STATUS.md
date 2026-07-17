@@ -16,7 +16,8 @@
 - None
 
 ## NEXT
-- Deploy to production
-- Set up analytics and monitoring
+- Set up Google Analytics for traffic monitoring
 - Optional: Add automated response emails to form submitters
+- Optional: Add CAPTCHA or honeypot for spam prevention
+- Optional: Implement server-side rate limiting (if needed across browsers)
 
