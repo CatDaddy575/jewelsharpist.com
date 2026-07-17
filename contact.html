@@ -464,7 +464,64 @@
         </div>
     </footer>
 
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
+        console.log('Script loading...');
+
+        // Initialize EmailJS
+        try {
+            emailjs.init('bN-_qy9sX1mVCvdqz');
+            console.log('EmailJS initialized successfully');
+        } catch (error) {
+            console.error('EmailJS init failed:', error);
+        }
+
+        const contactForm = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+        const submitButton = document.querySelector('.submit-button');
+
+        if (contactForm) {
+            console.log('Contact form found, attaching submit handler');
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('Form submit event triggered');
+
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    eventType: document.getElementById('eventType').value,
+                    eventDate: document.getElementById('eventDate').value,
+                    message: document.getElementById('message').value
+                };
+
+                console.log('Sending form data:', formData);
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+
+                emailjs.send('service_eq6hqtn', 'template_djludo6', formData)
+                    .then(function(response) {
+                        console.log('Email sent successfully:', response);
+                        successMessage.classList.add('show');
+                        contactForm.reset();
+                        submitButton.textContent = 'Inquiry Submitted';
+                        setTimeout(function() {
+                            successMessage.classList.remove('show');
+                            submitButton.disabled = false;
+                            submitButton.textContent = 'Submit Inquiry';
+                        }, 5000);
+                    })
+                    .catch(function(error) {
+                        console.error('Email send failed:', error);
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Submit Inquiry';
+                        alert('Error sending message: ' + (error.text || error.message || 'Unknown error'));
+                    });
+            });
+        } else {
+            console.error('Contact form not found');
+        }
+
         // Make CTA button link to contact form
         document.querySelectorAll('.cta-button').forEach(btn => {
             if (btn.textContent === 'Book Now') {
