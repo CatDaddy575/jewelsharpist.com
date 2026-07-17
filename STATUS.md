@@ -13,15 +13,15 @@
 - Added success message and submit button feedback (disabled after submission)
 
 ## NOW
-- **CRITICAL: Fix Gmail OAuth authentication scope issue**
-  - Root cause identified: "Gmail_API: Request had insufficient authentication scopes"
-  - Gmail service (service_eq6hqtn) needs to be re-authorized with full email sending permissions
-  - EmailJS template (template_djludo6) and public key (bN-_qy9sX1mVCvdqz) are correctly configured
-  - Service ID, template ID, and public key all verified and correct
-  - Need to reconnect Gmail account in EmailJS dashboard with proper OAuth scopes
+- **TESTING:** Contact form end-to-end verification in progress
+  - EmailJS Gmail OAuth has been re-authorized with proper scopes
+  - Service successfully shows: "Connected as jewelsharpist@gmail.com"
+  - Test emails are being delivered to jewel sharpist@gmail.com inbox
+  - Form submissions showing OK status in EmailJS Email History
+  - Template (template_djludo6) confirmed working with "Contact Us" email type
 
 ## NEXT
-- Once Gmail OAuth scopes fixed, test form submissions end-to-end
+- Verify auto-forwarding from jewelsharpist@gmail.com to mfollis82@gmail.com is working
 - Set up Google Analytics for traffic monitoring
 - Optional: Add automated response emails to form submitters
 - Optional: Add CAPTCHA or honeypot for spam prevention
