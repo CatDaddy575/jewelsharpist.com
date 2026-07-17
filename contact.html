@@ -465,8 +465,11 @@
     </footer>
 
     <script src="https://unpkg.com/emailjs-com@3/dist/email.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         console.log('Script loading...');
+        console.log('jQuery loaded:', typeof window.jQuery !== 'undefined' ? 'YES' : 'NO');
+        console.log('EmailJS loaded:', typeof window.emailjs !== 'undefined' ? 'YES' : 'NO');
 
         // Initialize EmailJS
         try {
