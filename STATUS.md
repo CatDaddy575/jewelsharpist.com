@@ -9,6 +9,8 @@
 - Integrated EmailJS for contact form submissions (replaces Formspree)
 - Set up Gmail service to send inquiries to jewelsharpist@gmail.com
 - Created email templates for contact submissions
+- Implemented rate limiting: max 3 submissions per event type per day per email
+- Added success message and submit button feedback (disabled after submission)
 
 ## NOW
 - None
