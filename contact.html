@@ -401,7 +401,7 @@
 
                     <div class="form-group">
                         <label for="eventDate">Preferred Event Date *</label>
-                        <input type="date" id="eventDate" name="eventDate" required>
+                        <input type="date" id="eventDate" name="eventDate" required min="">
                     </div>
 
                     <div class="form-group">
@@ -468,6 +468,13 @@
         const contactForm = document.getElementById('contactForm');
         const successMessage = document.getElementById('successMessage');
         const submitButton = document.querySelector('.submit-button');
+        const eventDateInput = document.getElementById('eventDate');
+
+        // Set minimum date to today to prevent past date selection
+        if (eventDateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            eventDateInput.min = today;
+        }
 
         if (contactForm) {
             contactForm.addEventListener('submit', function(e) {
