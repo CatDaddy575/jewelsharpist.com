@@ -371,7 +371,7 @@
                 <div class="success-message" id="successMessage">
                     Thank you for reaching out! Julia will be in touch within 24 hours.
                 </div>
-                <form id="contactForm" action="https://formspree.io/f/xyzqvyqk" method="POST">
+                <form id="contactForm" action="https://formspree.io/f/mdaqebkj" method="POST">
                     <div class="form-group">
                         <label for="name">Full Name *</label>
                         <input type="text" id="name" name="name" required>
@@ -465,73 +465,26 @@
     </footer>
 
     <script>
-        // Dynamically load EmailJS library
-        fetch('https://unpkg.com/emailjs-com@3/dist/email.min.js')
-            .then(response => response.text())
-            .then(code => {
-                eval(code);
-                console.log('EmailJS loaded dynamically');
-                // Initialize EmailJS after loading
-                try {
-                    emailjs.init('bN-_qy9sX1mVCvdqz');
-                    console.log('EmailJS initialized successfully');
-                } catch (error) {
-                    console.error('EmailJS init failed:', error);
-                }
-            })
-            .catch(error => console.error('Failed to load EmailJS:', error));
-
-        console.log('Script loading...');
-
         const contactForm = document.getElementById('contactForm');
         const successMessage = document.getElementById('successMessage');
         const submitButton = document.querySelector('.submit-button');
 
         if (contactForm) {
-            console.log('Contact form found, attaching submit handler');
             contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                console.log('Form submit event triggered');
-
-                const formData = {
-                    name: document.getElementById('name').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    eventType: document.getElementById('eventType').value,
-                    eventDate: document.getElementById('eventDate').value,
-                    message: document.getElementById('message').value
-                };
-
-                console.log('Sending form data:', formData);
                 submitButton.disabled = true;
                 submitButton.textContent = 'Submitting...';
-
-                emailjs.send('service_eq6hqtn', 'template_djludo6', formData)
-                    .then(function(response) {
-                        console.log('✓ Email sent successfully!', response);
-                        console.log('Response status:', response.status);
-                        successMessage.classList.add('show');
-                        contactForm.reset();
-                        submitButton.textContent = 'Inquiry Submitted';
-                        setTimeout(function() {
-                            successMessage.classList.remove('show');
-                            submitButton.disabled = false;
-                            submitButton.textContent = 'Submit Inquiry';
-                        }, 5000);
-                    })
-                    .catch(function(error) {
-                        console.error('✗ Email send failed!');
-                        console.error('Error details:', JSON.stringify(error, null, 2));
-                        console.error('Error text:', error.text);
-                        console.error('Error message:', error.message);
-                        console.error('Error status:', error.status);
-                        submitButton.disabled = false;
-                        submitButton.textContent = 'Submit Inquiry';
-                        alert('Error sending message: ' + (error.text || error.message || JSON.stringify(error)));
-                    });
             });
-        } else {
-            console.error('Contact form not found');
+
+            // Show success message after form submission
+            window.addEventListener('load', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('success')) {
+                    successMessage.classList.add('show');
+                    setTimeout(function() {
+                        successMessage.classList.remove('show');
+                    }, 5000);
+                }
+            });
         }
 
         // Make CTA button link to contact form
