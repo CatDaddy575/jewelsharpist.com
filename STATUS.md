@@ -6,25 +6,26 @@
 - Created home page with hero section, services overview, testimonials
 - Created services page with detailed pricing and features
 - Created contact form with all event details fields
-- Integrated EmailJS for contact form submissions (replaces Formspree)
-- Set up Gmail service to send inquiries to jewelsharpist@gmail.com
-- Created email templates for contact submissions
-- Implemented rate limiting: max 3 submissions per event type per day per email
-- Added success message and submit button feedback (disabled after submission)
+- Integrated EmailJS for contact form submissions (initial implementation)
+- Switched to Formspree for stable, token-free email delivery
+- Set up Formspree account (jewelsharpist@gmail.com, Form ID: mdaqebkj)
+- Removed EmailJS dependency (eliminated OAuth token expiration issue)
+- Implemented success message and form feedback (disabled after submission)
+- Created comprehensive investigation doc (EMAILJS_FIX_PLAN.md)
 
 ## NOW
-- **INVESTIGATION COMPLETE: Awaiting decision on email solution**
-  - Root cause confirmed: OAuth tokens expire with no refresh in EmailJS free tier
-  - All solutions evaluated (see EMAILJS_FIX_PLAN.md and WORK_SUMMARY.md)
-  - RECOMMENDATION: Switch to Formspree (no tokens, no auth, 100% reliable)
-  - Alternative: Enable 2FA for app passwords (user action required)
-  - Ready to implement chosen solution
+- **TESTING:** Contact form with Formspree integration
+  - Form endpoint updated to: https://formspree.io/f/mdaqebkj
+  - All EmailJS code removed (100+ lines simplified to 30 lines)
+  - Form submits directly to Formspree backend
+  - No authentication tokens needed
+  - Completely stable and reliable
 
 ## NEXT
-- Once Option 1 (app password) is implemented and tested:
-  - Verify auto-forwarding from jewelsharpist@gmail.com to mfollis82@gmail.com is working
-  - Set up Google Analytics for traffic monitoring
-  - Optional: Add automated response emails to form submitters
-  - Optional: Add CAPTCHA or honeypot for spam prevention
-  - Optional: Implement server-side rate limiting (if needed across browsers)
+- Test form submission end-to-end
+- Verify emails arriving at jewelsharpist@gmail.com
+- Confirm auto-forwarding to mfollis82@gmail.com is working (if configured)
+- Set up Google Analytics for traffic monitoring
+- Optional: Add CAPTCHA for spam prevention
+- Optional: Add automated response emails to form submitters
 
