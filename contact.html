@@ -60,10 +60,16 @@
             text-decoration: none;
         }
 
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
         nav ul {
             display: flex;
             list-style: none;
-            gap: 3rem;
+            gap: 1.75rem;
         }
 
         nav a {
@@ -74,6 +80,7 @@
             letter-spacing: 0.3px;
             transition: color 0.3s;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         nav a:hover {
@@ -83,7 +90,7 @@
         .cta-button {
             background: var(--primary);
             color: white;
-            padding: 0.8rem 1.8rem;
+            padding: 0.8rem 1.4rem;
             border-radius: 2px;
             text-decoration: none;
             transition: all 0.3s;
@@ -345,13 +352,16 @@
     <!-- Navigation -->
     <header>
         <nav>
-            <a href="index.html" class="logo">Jewels Harpist</a>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="testimonials.html">Testimonials</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
+            <div class="nav-left">
+                <a href="index.html" class="logo">Jewels Harpist</a>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="quote.html">Get an Estimate</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
             <button class="cta-button">Book Now</button>
         </nav>
     </header>
@@ -494,12 +504,12 @@
             });
         }
 
-        // Make CTA button link to contact form
+        // Book Now routes through the estimate tool, not straight to this form
         document.querySelectorAll('.cta-button').forEach(btn => {
             if (btn.textContent === 'Book Now') {
                 btn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    window.location.href = 'contact.html';
+                    window.location.href = 'quote.html';
                 });
             }
         });

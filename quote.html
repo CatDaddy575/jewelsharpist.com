@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get an Estimate | Jewels Harpist | Instant Harp Music Pricing</title>
+    <meta name="description" content="Answer a few quick questions and get an instant, non-binding price estimate for harp music at your wedding, party, or memorial service in the Savannah, GA area.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2a2a2a;
+            --accent: #1e4d3f;
+            --accent-light: #d4af37;
+            --dark: #2a2a2a;
+            --light: #f8f8f8;
+            --text: #2a2a2a;
+            --border: #e8e8e8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: white;
+        }
+
+        /* Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.99);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.75rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            color: var(--accent-light);
+        }
+
+        nav a.active {
+            color: var(--accent);
+        }
+
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.4rem;
+            border-radius: 2px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .cta-button:hover {
+            background: var(--accent);
+            color: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
+            padding: 5rem 2rem 3rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Estimate Tool Section */
+        .quote-section {
+            padding: 4rem 2rem 6rem;
+            background: white;
+        }
+
+        .quote-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .success-message {
+            display: none;
+            background: #004225;
+            color: white;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group > label,
+        .form-group > .group-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(30, 77, 63, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+
+        /* Event type cards */
+        .event-type-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .event-type-option input {
+            display: none;
+        }
+
+        .event-type-option label {
+            display: block;
+            padding: 1.5rem 1rem;
+            border: 1px solid var(--border);
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+            transition: all 0.2s;
+        }
+
+        .event-type-option input:checked + label {
+            border-color: var(--accent-light);
+            background: #fafafa;
+            box-shadow: inset 0 0 0 1px var(--accent-light);
+        }
+
+        .event-type-option label:hover {
+            border-color: var(--accent);
+        }
+
+        /* Two-up field rows */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* City / State / Zip row */
+        .form-row-address {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Calculate button */
+        .calc-button {
+            background: var(--accent);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 2px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .calc-button:hover {
+            background: var(--primary);
+        }
+
+        .calc-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .calc-error {
+            display: none;
+            background: #fdecea;
+            border-left: 3px solid #c0392b;
+            color: #c0392b;
+            padding: 1rem 1.5rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .calc-error.show {
+            display: block;
+        }
+
+        /* Result box */
+        .quote-result {
+            display: none;
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .quote-result.show {
+            display: block;
+        }
+
+        .quote-result h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .quote-breakdown {
+            background: #fafafa;
+            padding: 2rem;
+            border-left: 3px solid var(--accent-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .quote-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        .quote-line:last-child {
+            border-bottom: none;
+        }
+
+        .quote-line .quote-line-label {
+            color: #555;
+        }
+
+        .quote-line .quote-line-amount {
+            color: var(--primary);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .quote-total-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.2rem;
+            margin-top: 0.5rem;
+            border-top: 2px solid var(--primary);
+        }
+
+        .quote-total-line .label {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .quote-total-line .amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-light);
+        }
+
+        .quote-notes {
+            margin-top: 1.5rem;
+        }
+
+        .quote-notes p {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 0.4rem;
+        }
+
+        .custom-quote-notice {
+            background: #fff8e6;
+            border-left: 3px solid var(--accent-light);
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .quote-disclaimer {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 1rem;
+        }
+
+        .submit-button {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 2px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .submit-button:hover {
+            background: var(--accent);
+            color: var(--accent-light);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Failure modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            max-width: 460px;
+            width: 100%;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .modal-box h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .modal-box p {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-box .modal-contact {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .modal-box button {
+            margin-top: 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.9rem 2.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-box button:hover {
+            background: var(--accent);
+            color: var(--accent-light);
+        }
+
+        /* Footer */
+        footer {
+            background: #00331d;
+            color: white;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.2rem;
+            color: var(--accent-light);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .footer-section p {
+            opacity: 0.75;
+            line-height: 1.8;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .event-type-options {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row,
+            .form-row-address {
+                grid-template-columns: 1fr;
+            }
+
+            .quote-total-line .amount {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav>
+            <div class="nav-left">
+                <a href="index.html" class="logo">Jewels Harpist</a>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="quote.html" class="active">Get an Estimate</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <button class="cta-button" onclick="window.location.href='quote.html'">Book Now</button>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Get an Instant Estimate</h1>
+        <p>Answer a few quick questions and see a free, non-binding price estimate right away — no waiting on a callback.</p>
+    </section>
+
+    <!-- Estimate Tool -->
+    <section class="quote-section">
+        <div class="quote-container">
+            <div class="success-message" id="successMessage">
+                Thank you! Julia has received your estimate request and will be in touch within 24 hours to confirm details.
+            </div>
+
+            <form id="quoteForm" action="https://formspree.io/f/mdaqebkj" method="POST">
+                <input type="hidden" name="_next" id="formNext" value="">
+                <input type="hidden" name="_subject" id="formSubject" value="New Estimate Request">
+                <input type="hidden" name="quoteSummary" id="quoteSummaryField" value="">
+
+                <!-- Event Type -->
+                <div class="form-group">
+                    <span class="group-label">What kind of event is this? *</span>
+                    <div class="event-type-options">
+                        <div class="event-type-option">
+                            <input type="radio" id="eventTypeWedding" name="eventType" value="wedding" required>
+                            <label for="eventTypeWedding">Wedding</label>
+                        </div>
+                        <div class="event-type-option">
+                            <input type="radio" id="eventTypeParty" name="eventType" value="party">
+                            <label for="eventTypeParty">Party / Corporate Event</label>
+                        </div>
+                        <div class="event-type-option">
+                            <input type="radio" id="eventTypeFuneral" name="eventType" value="funeral">
+                            <label for="eventTypeFuneral">Funeral / Memorial</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Date -->
+                <div class="form-group">
+                    <label for="eventDate">Event Date *</label>
+                    <input type="date" id="eventDate" name="eventDate" required min="">
+                    <p class="form-hint">Submitting a date does not guarantee availability — Julia will confirm when she follows up.</p>
+                </div>
+
+                <!-- Venue Address -->
+                <div class="form-group">
+                    <label for="streetAddress">Street Address *</label>
+                    <input type="text" id="streetAddress" name="streetAddress" required placeholder="e.g. 123 Main St">
+                </div>
+                <div class="form-row-address" id="addressRow2">
+                    <div class="form-group">
+                        <label for="city">City *</label>
+                        <input type="text" id="city" name="city" required placeholder="e.g. Savannah">
+                    </div>
+                    <div class="form-group" id="stateFieldWrap">
+                        <label for="state">State *</label>
+                        <select id="state" name="state" required>
+                            <option value="">Select</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
+                            <option value="DC">Washington DC</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="zip">ZIP Code *</label>
+                        <input type="text" id="zip" name="zip" required pattern="\d{5}" maxlength="5" inputmode="numeric" placeholder="31401">
+                    </div>
+                </div>
+                <p class="form-hint">We use the zip code to estimate travel distance from Julia's Savannah base. The first 25 miles are included at no charge.</p>
+
+                <!-- Hours: wedding -->
+                <div class="form-group" id="hoursWeddingGroup" style="display: none;">
+                    <label for="addOnHoursWedding">Additional hours beyond the ceremony (e.g. cocktail hour)</label>
+                    <input type="number" id="addOnHoursWedding" name="addOnHoursWeddingInput" min="0" max="10" step="1" value="0">
+                    <p class="form-hint">Leave at 0 if you only need the ceremony performance.</p>
+                </div>
+
+                <!-- Hours: party/funeral -->
+                <div class="form-group" id="hoursHourlyGroup" style="display: none;">
+                    <label for="totalHours">Total hours of performance</label>
+                    <input type="number" id="totalHours" name="totalHoursInput" min="1" max="10" step="1" value="1">
+                    <p class="form-hint">The first hour is included in the base rate shown below.</p>
+                </div>
+
+                <button type="button" class="calc-button" id="calcButton">Get My Estimate</button>
+                <div class="calc-error" id="calcError"></div>
+
+                <!-- Result -->
+                <div class="quote-result" id="quoteResult">
+                    <h2>Your Estimate</h2>
+                    <div id="quoteBreakdown"></div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Anything else Julia should know? (optional)</label>
+                        <textarea id="notes" name="notes" placeholder="E.g. a break between performance times, a specific song request, or anything else about your event."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-button" id="submitButton">Request This Estimate</button>
+                    <p class="quote-disclaimer">This is a free, non-binding estimate based on the details above — final pricing will be confirmed by Julia when she follows up.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Jewels Harpist</h4>
+                <p>Professional harp music for weddings, corporate events, and celebrations in Savannah, GA.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Services</h4>
+                <p>• Weddings<br>• Corporate Events<br>• Memorials<br>• Private Celebrations</p>
+            </div>
+            <div class="footer-section">
+                <h4>Get In Touch</h4>
+                <p>Phone: (706) 247-2919<br>Email: jewelsharpist@gmail.com<br>Location: Savannah, GA</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Jewels Harpist. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Failure Modal -->
+    <div class="modal-overlay" id="failureModal" role="alertdialog" aria-labelledby="failureModalTitle" aria-modal="true">
+        <div class="modal-box">
+            <h3 id="failureModalTitle">Unable to provide an estimate at this time</h3>
+            <p>Something went wrong on our end. Please try again in a few minutes.</p>
+            <p>If you'd like to reach out directly, Julia is happy to help:</p>
+            <p class="modal-contact">(706) 247-2919 &nbsp;|&nbsp; jewelsharpist@gmail.com</p>
+            <button type="button" id="failureModalClose">OK</button>
+        </div>
+    </div>
+
+    <script src="pricing.js"></script>
+    <script src="distance.js"></script>
+    <script>
+        const eventTypeInputs = document.querySelectorAll('input[name="eventType"]');
+        const hoursWeddingGroup = document.getElementById('hoursWeddingGroup');
+        const hoursHourlyGroup = document.getElementById('hoursHourlyGroup');
+        const calcButton = document.getElementById('calcButton');
+        const calcError = document.getElementById('calcError');
+        const quoteResult = document.getElementById('quoteResult');
+        const quoteBreakdown = document.getElementById('quoteBreakdown');
+        const quoteForm = document.getElementById('quoteForm');
+        const submitButton = document.getElementById('submitButton');
+        const quoteSummaryField = document.getElementById('quoteSummaryField');
+        const formSubject = document.getElementById('formSubject');
+        const formNext = document.getElementById('formNext');
+        const successMessage = document.getElementById('successMessage');
+        const failureModal = document.getElementById('failureModal');
+        const failureModalClose = document.getElementById('failureModalClose');
+        const eventDateInput = document.getElementById('eventDate');
+        const streetAddressInput = document.getElementById('streetAddress');
+        const cityInput = document.getElementById('city');
+        const stateSelect = document.getElementById('state');
+        const zipInput = document.getElementById('zip');
+
+        if (eventDateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            eventDateInput.min = today;
+        }
+
+        formNext.value = window.location.origin + window.location.pathname + '?success=1';
+
+        function showFailureModal() {
+            failureModal.classList.add('show');
+        }
+
+        function hideFailureModal() {
+            failureModal.classList.remove('show');
+        }
+
+        failureModalClose.addEventListener('click', hideFailureModal);
+
+        function currentEventType() {
+            const checked = document.querySelector('input[name="eventType"]:checked');
+            return checked ? checked.value : null;
+        }
+
+        function updateHoursFields() {
+            const eventType = currentEventType();
+            hoursWeddingGroup.style.display = eventType === 'wedding' ? 'block' : 'none';
+            hoursHourlyGroup.style.display = (eventType === 'party' || eventType === 'funeral') ? 'block' : 'none';
+        }
+
+        eventTypeInputs.forEach(function (input) {
+            input.addEventListener('change', function () {
+                updateHoursFields();
+                quoteResult.classList.remove('show');
+                submitButton.disabled = true;
+            });
+        });
+
+        function money(n) {
+            return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function fullAddress() {
+            const street = streetAddressInput.value.trim();
+            const city = cityInput.value.trim();
+            const state = stateSelect.value;
+            const zip = zipInput.value.trim();
+            return street + ', ' + city + ', ' + state + ' ' + zip;
+        }
+
+        function buildParamsWithoutDistance() {
+            const eventType = currentEventType();
+            if (!eventType) {
+                throw new Error('Please choose an event type.');
+            }
+
+            let addOnHours = 0;
+            if (eventType === 'wedding') {
+                addOnHours = parseInt(document.getElementById('addOnHoursWedding').value || '0', 10);
+            } else {
+                const totalHours = parseInt(document.getElementById('totalHours').value || '1', 10);
+                if (totalHours < 1) {
+                    throw new Error('Total hours must be at least 1.');
+                }
+                addOnHours = totalHours - 1;
+            }
+
+            return { eventType: eventType, addOnHours: addOnHours, hasGap: false, extras: [] };
+        }
+
+        function renderQuote(quote) {
+            let html = '';
+
+            if (quote.needsCustomQuote) {
+                html += '<div class="custom-quote-notice">' + quote.customQuoteReason + '</div>';
+                html += '<div class="quote-breakdown">';
+                html += '<div class="quote-line"><span class="quote-line-label">' + quote.base.label + '</span><span class="quote-line-amount">' + money(quote.base.price) + ' (starting point)</span></div>';
+                if (quote.travel.fee > 0) {
+                    html += '<div class="quote-line"><span class="quote-line-label">Travel (' + quote.travel.billableMiles + ' billable miles beyond the free ' + quote.travel.freeRadiusMiles + ' mile radius)</span><span class="quote-line-amount">' + money(quote.travel.fee) + '</span></div>';
+                }
+                html += '</div>';
+            } else {
+                html += '<div class="quote-breakdown">';
+                html += '<div class="quote-line"><span class="quote-line-label">' + quote.base.label + '</span><span class="quote-line-amount">' + money(quote.base.price) + '</span></div>';
+                if (quote.additionalHours.count > 0) {
+                    html += '<div class="quote-line"><span class="quote-line-label">' + quote.additionalHours.count + ' additional hour(s) (' + quote.additionalHours.rateDescription + ')</span><span class="quote-line-amount">' + money(quote.additionalHours.price) + '</span></div>';
+                }
+                if (quote.travel.fee > 0) {
+                    html += '<div class="quote-line"><span class="quote-line-label">Travel (' + quote.travel.billableMiles + ' billable miles beyond the free ' + quote.travel.freeRadiusMiles + ' mile radius)</span><span class="quote-line-amount">' + money(quote.travel.fee) + '</span></div>';
+                } else {
+                    html += '<div class="quote-line"><span class="quote-line-label">Travel (within the free ' + quote.travel.freeRadiusMiles + ' mile radius)</span><span class="quote-line-amount">' + money(0) + '</span></div>';
+                }
+                quote.extras.forEach(function (extra) {
+                    html += '<div class="quote-line"><span class="quote-line-label">' + extra.label + '</span><span class="quote-line-amount">' + money(extra.fee) + '</span></div>';
+                });
+                html += '<div class="quote-total-line"><span class="label">Estimated Total</span><span class="amount">' + money(quote.total) + '</span></div>';
+                html += '</div>';
+            }
+
+            html += '<div class="quote-notes">';
+            quote.notes.forEach(function (note) {
+                html += '<p>' + note + '</p>';
+            });
+            html += '</div>';
+
+            quoteBreakdown.innerHTML = html;
+        }
+
+        function buildSummaryText(quote, address) {
+            const lines = [];
+            lines.push('Event type: ' + quote.eventType);
+            lines.push('Venue address: ' + address);
+            lines.push('Base: ' + quote.base.label + ' - ' + money(quote.base.price));
+            if (quote.needsCustomQuote) {
+                lines.push('NEEDS CUSTOM QUOTE: ' + quote.customQuoteReason);
+            } else {
+                lines.push('Additional hours: ' + quote.additionalHours.count + ' - ' + money(quote.additionalHours.price));
+            }
+            lines.push('Travel: ' + quote.travel.distanceMiles + ' driving miles, ' + quote.travel.billableMiles + ' billable miles, fee ' + money(quote.travel.fee));
+            lines.push('Total: ' + (quote.needsCustomQuote ? 'Needs custom quote' : money(quote.total)));
+            return lines.join('\n');
+        }
+
+        calcButton.addEventListener('click', async function () {
+            calcError.classList.remove('show');
+
+            let params;
+            try {
+                params = buildParamsWithoutDistance();
+            } catch (err) {
+                calcError.textContent = err.message;
+                calcError.classList.add('show');
+                return;
+            }
+
+            if (!streetAddressInput.value.trim() || !cityInput.value.trim() || !stateSelect.value) {
+                calcError.textContent = 'Please fill in the street address, city, and state.';
+                calcError.classList.add('show');
+                return;
+            }
+            const zip = zipInput.value.trim();
+            if (!/^\d{5}$/.test(zip)) {
+                calcError.textContent = 'ZIP code must be exactly 5 digits.';
+                calcError.classList.add('show');
+                return;
+            }
+
+            const originalButtonText = calcButton.textContent;
+            calcButton.disabled = true;
+            calcButton.textContent = 'Calculating...';
+
+            try {
+                const distanceResult = await estimateDistanceFromZip(zip);
+                const distanceMiles = distanceResult.drivingMiles;
+
+                params.distanceMiles = distanceMiles;
+                const quote = calculateQuote(params);
+                renderQuote(quote);
+                quoteResult.classList.add('show');
+                submitButton.disabled = false;
+
+                quoteSummaryField.value = buildSummaryText(quote, fullAddress());
+                formSubject.value = 'New Estimate Request - ' + quote.eventType + ' - ' +
+                    (quote.needsCustomQuote ? 'Needs custom quote' : money(quote.total));
+
+                quoteResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (err) {
+                quoteResult.classList.remove('show');
+                submitButton.disabled = true;
+                if (err instanceof InvalidZipError) {
+                    calcError.textContent = err.message;
+                    calcError.classList.add('show');
+                } else {
+                    showFailureModal();
+                }
+            } finally {
+                calcButton.disabled = false;
+                calcButton.textContent = originalButtonText;
+            }
+        });
+
+        quoteForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            submitButton.disabled = true;
+            const originalSubmitText = submitButton.textContent;
+            submitButton.textContent = 'Submitting...';
+
+            try {
+                const response = await fetch(quoteForm.action, {
+                    method: 'POST',
+                    body: new FormData(quoteForm),
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!response.ok) {
+                    throw new Error('Submission failed with status ' + response.status);
+                }
+                window.location.href = formNext.value;
+            } catch (err) {
+                showFailureModal();
+                submitButton.disabled = false;
+                submitButton.textContent = originalSubmitText;
+            }
+        });
+
+        window.addEventListener('load', function () {
+            updateHoursFields();
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('success')) {
+                successMessage.classList.add('show');
+                setTimeout(function () {
+                    successMessage.classList.remove('show');
+                }, 6000);
+            }
+        });
+    </script>
+</body>
+</html>

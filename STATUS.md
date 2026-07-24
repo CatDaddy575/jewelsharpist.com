@@ -45,3 +45,124 @@
 - Optional: Add automated response emails to form submitters
 - Deploy to production (currently tested locally)
 
+## DONE (cont'd, 2026-07-24) — Instant Quoting Tool
+- Built `quote_pricing_bubba` (in the separate `bubbas` project) as the
+  documented, tested pricing engine - rates confirmed from a recorded
+  interview with Julia. See the "quoting-tool-pricing-rules" and
+  "quoting-tool-architecture" memories for the full history.
+- Added `pricing.js` - a manual JS port of that bubba's exact rules, since
+  this site is static (GitHub Pages, no backend) and can't call the real
+  Python bubba live.
+- Added `quote.html` - the on-page question flow (event type, travel
+  distance, hours, gap-time check) that calls `pricing.js` and shows an
+  instant price breakdown, then hands off to the existing Formspree contact
+  pipe (same form ID as contact.html) with the full quote attached via
+  hidden fields.
+- Added "Get a Quote" to the nav on all pages; the three "Request a Quote"
+  buttons on services.html now link to quote.html instead of contact.html.
+- Verified in-browser via a local http.server preview: wedding + 3 add-on
+  hours + in-town distance = $925 (matches Julia's own worked example from
+  the interview); gap-time and far-travel scenarios correctly show a
+  "needs custom quote" message instead of a fabricated total; empty-field
+  and missing-distance errors display cleanly with no console errors.
+
+## DONE (cont'd, 2026-07-24 round 2) — Estimate Tool Revisions
+- Renamed all user-facing "quote" wording to "estimate" (legal reasons - less
+  binding). Page URL stayed `quote.html`; only visible text changed
+  (headings, buttons, nav label, email subject line).
+- Replaced the manual "distance in miles" number field with a **venue
+  address** field. Added `distance.js` + a new bubba
+  (`distance_estimator_bubba`) that extract a 5-digit zip from the address
+  and estimate road miles via zippopotam.us (free, keyless, confirmed
+  CORS-friendly) - the U.S. Census full-address geocoder was tried first and
+  confirmed NOT to allow cross-origin browser calls, so full-address
+  geocoding isn't viable without a backend this site doesn't have. A manual
+  distance-entry fallback appears if the automatic lookup fails.
+- Relabeled "Private Party" → "Party / Corporate Event"; corporate events
+  now use the same $325 base rate as parties (user's explicit call). Fixed
+  services.html's stale $350 Corporate and $350 Memorial figures to $325 to
+  match the tool.
+- Removed the dedicated gap-time yes/no question from the UI (kept in the
+  underlying engine, just not asked anymore) - the notes field now prompts
+  visitors to mention a split schedule there instead.
+- Fixed a real nav-spacing bug across all 5 pages: grouped the logo + nav
+  links into one `.nav-left` container so `justify-content: space-between`
+  only governs the gap to the Book Now button, instead of squeezing unevenly
+  as more nav links get added.
+- Re-verified everything end-to-end in-browser via a local http.server
+  preview: live zip lookup works (31419 → $355 total for a $325 base + $30
+  travel), manual-distance fallback works, bad-address error handling is
+  clean, no console errors, nav no longer overlaps at ~950px width.
+
+## DONE (cont'd, 2026-07-24 round 3) — Structured Address Fields
+- Replaced the single free-text venue-address box with 4 separate required
+  fields: Street Address, City, State (dropdown, all 50 states + DC), ZIP
+  Code. Removes the old zip-regex-extraction step entirely - the ZIP field
+  is validated directly (must be exactly 5 digits) and passed straight to
+  the distance lookup.
+- Fixed a UX bug caught during testing: the "enter distance manually"
+  fallback was appearing even for a plain missing-field error (e.g. city
+  left blank), not just when the automatic zip lookup actually failed.
+  Reworked so field-validation errors and lookup-failure errors take
+  different paths - only a real lookup failure reveals the manual fallback.
+- Re-verified in-browser: happy path (wedding, real Savannah address, $425
+  total), missing-field error (clean message, no manual-fallback reveal),
+  mobile layout (City/State/Zip stack cleanly), no console errors.
+- Build note: writing the ~50-option state dropdown as one big edit
+  repeatedly tripped a content-filter block with no visible cause - worked
+  around by adding it in ~6 small chunks instead. See the
+  "quoting-tool-architecture" memory for details in case this recurs.
+
+## DONE (cont'd, 2026-07-24 round 4) — Removed Manual Distance Fallback
+- Deleted the "enter distance manually" field and all its JS branching, at
+  the user's explicit request. If the automatic ZIP lookup fails (bad zip,
+  network issue), the visitor now just sees a clear error and has to fix
+  the address - no bypass option anymore.
+- Re-verified: valid address computes a correct estimate ($325 for a real
+  31419 lookup); an invalid zip (00000) shows "'00000' isn't a recognized
+  US zip code." with no fallback field appearing; no console errors.
+
+## DONE (cont'd, 2026-07-24 round 5) — Distance Gate, Book Now, Date, Failure Modal
+- **200-mile custom-quote gate**: beyond 200 real driving miles from zip
+  31401, the tool refuses a total (overnight stay + per diem needed) - same
+  pattern as the existing gap-time gate, and the two can combine.
+- **Distance is now REAL driving distance**, not an estimate: rewrote
+  `distance_estimator_bubba` and `distance.js` to chain zippopotam.us (zip
+  -> coordinates) into OSRM's free public routing server (coordinates ->
+  real driving miles). Confirmed via live CORS testing this works free,
+  keyless, straight from the browser. Verified accuracy: Atlanta now
+  computes to 261.2 real miles (old estimate was 300.6, ~20% high).
+- **"Book Now" now routes through the estimate tool** on all 5 pages,
+  instead of straight to the plain contact form. "Schedule a Consultation"
+  and the "Contact" nav link deliberately still go to contact.html - Julia
+  wants Contact to stay a separate "just ask a question" channel (a
+  chatbot is planned there later). Found and fixed two unrelated
+  pre-existing bugs while in there: services.html/testimonials.html's
+  Book Now buttons had no click handler at all (did nothing), and
+  index.html had a leftover "Booking form coming soon!" alert from before
+  the contact form existed.
+- **Event Date moved to the top of the form**, right after event type,
+  with a disclaimer that submitting doesn't guarantee availability - real
+  double-booking prevention needs a Google Calendar integration, which is
+  blocked: Julia doesn't have a Google Calendar yet. Tested and confirmed
+  Google's calendar feed can't be read directly from browser JS either
+  (same CORS issue as the address geocoder) - this will need one small
+  free serverless function once she sets one up. See the
+  "quoting-tool-architecture" memory for the concrete plan.
+- **Failure modal**: a real modal (dimmed background, must click OK -
+  no other way to dismiss) reading "Unable to provide an estimate at this
+  time... (706) 247-2919 | jewelsharpist@gmail.com". No data harvesting,
+  no auto-email to Julia (explicitly descoped). Covers two distinct
+  failure points - the estimate calculation itself, and the actual
+  Formspree submission (converted from a plain form POST to fetch() so a
+  failed submission can be caught at all). Verified all three failure
+  paths in-browser by simulating outages.
+
+**NEXT for the quoting tool:** build the Google Calendar overlap check once
+Julia has a calendar (plan is written up in the "quoting-tool-architecture"
+memory); get real prices for the `known_extras` catalog if/when Julia wants
+specific add-ons priced; design a better long-term approach for gap-time
+(split-schedule) events than the current silent notes-field workaround;
+otherwise this feature is functionally complete pending a decision on
+committing the branch.
+

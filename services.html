@@ -60,10 +60,16 @@
             text-decoration: none;
         }
 
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
         nav ul {
             display: flex;
             list-style: none;
-            gap: 3rem;
+            gap: 1.75rem;
         }
 
         nav a {
@@ -74,6 +80,7 @@
             letter-spacing: 0.3px;
             transition: color 0.3s;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         nav a:hover {
@@ -83,7 +90,7 @@
         .cta-button {
             background: var(--primary);
             color: white;
-            padding: 0.8rem 1.8rem;
+            padding: 0.8rem 1.4rem;
             border-radius: 2px;
             text-decoration: none;
             transition: all 0.3s;
@@ -353,14 +360,17 @@
     <!-- Navigation -->
     <header>
         <nav>
-            <a href="index.html" class="logo">Jewels Harpist</a>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="testimonials.html">Testimonials</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-            <button class="cta-button">Book Now</button>
+            <div class="nav-left">
+                <a href="index.html" class="logo">Jewels Harpist</a>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="quote.html">Get an Estimate</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <button class="cta-button" onclick="window.location.href='quote.html'">Book Now</button>
         </nav>
     </header>
 
@@ -388,7 +398,7 @@
                         <span class="price-label">Starting at</span>
                         <span class="price-amount">$425</span>
                     </div>
-                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Request a quote to discuss your event's specific needs and get customized pricing.</p>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Request an estimate to discuss your event's specific needs and get customized pricing.</p>
                 </div>
 
                 <div class="features-list">
@@ -402,7 +412,7 @@
                     </ul>
                 </div>
 
-                <a href="contact.html" class="quote-button">Request a Quote</a>
+                <a href="quote.html" class="quote-button">Request an Estimate</a>
             </div>
 
             <div class="service-item">
@@ -418,9 +428,9 @@
                     <h3>Corporate Pricing</h3>
                     <div class="price-item">
                         <span class="price-label">Starting at</span>
-                        <span class="price-amount">$350</span>
+                        <span class="price-amount">$325</span>
                     </div>
-                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Request a quote to discuss your event's specific needs and get customized pricing.</p>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Request an estimate to discuss your event's specific needs and get customized pricing.</p>
                 </div>
 
                 <div class="features-list">
@@ -434,7 +444,7 @@
                     </ul>
                 </div>
 
-                <a href="contact.html" class="quote-button">Request a Quote</a>
+                <a href="quote.html" class="quote-button">Request an Estimate</a>
             </div>
 
             <div class="service-item">
@@ -450,9 +460,9 @@
                     <h3>Memorial Pricing</h3>
                     <div class="price-item">
                         <span class="price-label">Starting at</span>
-                        <span class="price-amount">$350</span>
+                        <span class="price-amount">$325</span>
                     </div>
-                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Request a quote to discuss your event's specific needs and get customized pricing.</p>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Request an estimate to discuss your event's specific needs and get customized pricing.</p>
                 </div>
 
                 <div class="features-list">
@@ -466,7 +476,7 @@
                     </ul>
                 </div>
 
-                <a href="contact.html" class="quote-button">Request a Quote</a>
+                <a href="quote.html" class="quote-button">Request an Estimate</a>
             </div>
         </div>
     </section>
