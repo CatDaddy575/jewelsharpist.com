@@ -713,12 +713,18 @@
                 </div>
                 <p class="form-hint">We use the zip code to estimate travel distance from Julia's Savannah base. The first 25 miles are included at no charge.</p>
 
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="you@example.com">
+                    <p class="form-hint">We'll email your estimate to this address - it doesn't display on this page.</p>
+                </div>
+
                 <button type="button" class="calc-button" id="calcButton">Get My Estimate</button>
                 <div class="calc-error" id="calcError"></div>
 
                 <!-- Result -->
                 <div class="quote-result" id="quoteResult">
-                    <h2>Your Estimate</h2>
+                    <h2 id="quoteResultHeading">Your Estimate</h2>
                     <div id="quoteBreakdown"></div>
 
                     <div class="form-row">
@@ -727,13 +733,9 @@
                             <input type="text" id="name" name="name" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required>
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number *</label>
-                        <input type="tel" id="phone" name="phone" required>
                     </div>
                     <div class="form-group">
                         <label for="notes">Anything else Julia should know? (optional)</label>
@@ -782,6 +784,7 @@
     <script src="pricing.js"></script>
     <script src="distance.js"></script>
     <script src="availability.js"></script>
+    <script src="email-estimate.js"></script>
     <script>
         const eventTypeInputs = document.querySelectorAll('input[name="eventType"]');
         const calcButton = document.getElementById('calcButton');
@@ -806,6 +809,7 @@
         const cityInput = document.getElementById('city');
         const stateSelect = document.getElementById('state');
         const zipInput = document.getElementById('zip');
+        const emailInput = document.getElementById('email');
 
         if (eventDateInput) {
             const today = new Date().toISOString().split('T')[0];
@@ -978,38 +982,56 @@
             return (end - start) / (1000 * 60 * 60);
         }
 
-        function renderQuote(quote, phaseLabels) {
-            let html = '';
+        function buildVisitorEmailText(quote, phaseLabels) {
+            const lines = [];
+            lines.push('Hi! Here\'s your instant estimate from Jewels Harpist.');
+            lines.push('');
+            lines.push('Event type: ' + quote.eventType);
+            lines.push('Date: ' + eventDateInput.value + ', ' + eventStartTimeInput.value + ' to ' + eventEndTimeInput.value);
+            lines.push('');
 
             if (quote.needsCustomQuote) {
-                html += '<div class="custom-quote-notice">' + quote.customQuoteReason + '</div>';
-                html += '<div class="quote-breakdown">';
-                html += '<div class="quote-line"><span class="quote-line-label">' + quote.base.label + '</span><span class="quote-line-amount">' + money(quote.base.price) + ' (starting point)</span></div>';
-                if (quote.travel.fee > 0) {
-                    html += '<div class="quote-line"><span class="quote-line-label">Travel (' + quote.travel.billableMiles + ' billable miles beyond the free ' + quote.travel.freeRadiusMiles + ' mile radius)</span><span class="quote-line-amount">' + money(quote.travel.fee) + '</span></div>';
-                }
-                html += '</div>';
+                lines.push('This event needs a custom quote: ' + quote.customQuoteReason);
+                lines.push('Julia will follow up directly to work out pricing.');
             } else {
                 const totalPlayHoursDisplay = 1 + quote.additionalPlayTime.hours;
                 const packagePrice = quote.base.price + quote.additionalPlayTime.price;
-                html += '<div class="quote-breakdown">';
-                html += '<div class="quote-line"><span class="quote-line-label">Performance Package (' + totalPlayHoursDisplay + (totalPlayHoursDisplay === 1 ? ' hr' : ' hrs') + ' of playing)</span><span class="quote-line-amount">' + money(packagePrice) + '</span></div>';
+                lines.push('Performance Package (' + totalPlayHoursDisplay + (totalPlayHoursDisplay === 1 ? ' hr' : ' hrs') + ' of playing): ' + money(packagePrice));
                 if (phaseLabels && phaseLabels.length > 0) {
-                    html += '<div class="quote-line"><span class="quote-line-label">Includes: ' + phaseLabels.join(', ') + '</span><span class="quote-line-amount"></span></div>';
+                    lines.push('Includes: ' + phaseLabels.join(', '));
                 }
                 if (quote.downtime.applies) {
-                    html += '<div class="quote-line"><span class="quote-line-label">Downtime (' + quote.downtime.gapHours + ' hr gap between arrival and playing, over double the play time)</span><span class="quote-line-amount">' + money(quote.downtime.fee) + '</span></div>';
+                    lines.push('Downtime (' + quote.downtime.gapHours + ' hr gap between arrival and playing): ' + money(quote.downtime.fee));
                 }
                 if (quote.travel.fee > 0) {
-                    html += '<div class="quote-line"><span class="quote-line-label">Travel (' + quote.travel.billableMiles + ' billable miles beyond the free ' + quote.travel.freeRadiusMiles + ' mile radius)</span><span class="quote-line-amount">' + money(quote.travel.fee) + '</span></div>';
+                    lines.push('Travel (' + quote.travel.billableMiles + ' billable miles beyond the free ' + quote.travel.freeRadiusMiles + ' mile radius): ' + money(quote.travel.fee));
                 } else {
-                    html += '<div class="quote-line"><span class="quote-line-label">Travel (within the free ' + quote.travel.freeRadiusMiles + ' mile radius)</span><span class="quote-line-amount">' + money(0) + '</span></div>';
+                    lines.push('Travel (within the free ' + quote.travel.freeRadiusMiles + ' mile radius): ' + money(0));
                 }
                 quote.extras.forEach(function (extra) {
-                    html += '<div class="quote-line"><span class="quote-line-label">' + extra.label + '</span><span class="quote-line-amount">' + money(extra.fee) + '</span></div>';
+                    lines.push(extra.label + ': ' + money(extra.fee));
                 });
-                html += '<div class="quote-total-line"><span class="label">Estimated Total</span><span class="amount">' + money(quote.total) + '</span></div>';
-                html += '</div>';
+                lines.push('');
+                lines.push('Estimated Total: ' + money(quote.total));
+            }
+
+            lines.push('');
+            quote.notes.forEach(function (note) {
+                lines.push(note);
+            });
+            lines.push('');
+            lines.push('This is a free, non-binding estimate - final pricing will be confirmed by Julia when she follows up.');
+            lines.push('Questions? Call (706) 247-2919 or email jewelsharpist@gmail.com.');
+            return lines.join('\n');
+        }
+
+        function renderConfirmation(quote, email) {
+            let html = '';
+            if (quote.needsCustomQuote) {
+                html += '<div class="custom-quote-notice">' + quote.customQuoteReason + '</div>';
+                html += '<div class="custom-quote-notice">We\'ve emailed the details to <strong>' + email + '</strong>, and Julia will follow up directly to work out custom pricing.</div>';
+            } else {
+                html += '<div class="custom-quote-notice">Check your inbox! We\'ve sent your estimate to <strong>' + email + '</strong>. (Check spam/promotions if you don\'t see it in a minute.)</div>';
             }
 
             html += '<div class="quote-notes">';
@@ -1100,6 +1122,12 @@
                 calcError.classList.add('show');
                 return;
             }
+            const email = emailInput.value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                calcError.textContent = 'Please enter a valid email address - that\'s where we\'ll send your estimate.';
+                calcError.classList.add('show');
+                return;
+            }
 
             const originalButtonText = calcButton.textContent;
             calcButton.disabled = true;
@@ -1122,7 +1150,11 @@
                 params.totalSpanHours = spanHours;
                 const quote = calculateQuote(params);
                 const phaseLabels = getSelectedPhaseLabels();
-                renderQuote(quote, phaseLabels);
+
+                const emailBody = buildVisitorEmailText(quote, phaseLabels);
+                await sendEstimateEmail(email, 'Your Harp Estimate from Jewels Harpist', emailBody);
+
+                renderConfirmation(quote, email);
                 quoteResult.classList.add('show');
                 submitButton.disabled = false;
 

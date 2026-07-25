@@ -53,3 +53,37 @@ end-to-end from the actual site.
 Edit the code at script.google.com (same project), then **Deploy** →
 **Manage deployments** → pencil icon → **New version** → **Deploy**. The
 URL stays the same, so nothing on the website needs to change.
+
+---
+
+# Deploying the estimate emailer
+
+Second, separate Apps Script project (`send-estimate-email.gs`). This is
+what actually emails a visitor their estimate - added 2026-07-26 when the
+on-page total was removed so the pricing formula can't be read just by
+opening the page repeatedly.
+
+Same deployment steps as above (new project at script.google.com, paste
+`send-estimate-email.gs`, **Deploy → New deployment → Web app**, Execute
+as **Me**, Who has access **Anyone**), with one difference: this script
+asks for a NEW permission the calendar checker didn't need - **send email
+as you (Gmail)**. It only sends the one email it's told to send (the
+visitor's own estimate) - it can't read your inbox or send anything else.
+
+Currently deployed at:
+`https://script.google.com/macros/s/AKfycbxVNEV5sCMatb9cWSjJxEcW10qJgj-GoSjRkktE4R0MGYFOzjT6ErKytzo-AmMmIICS/exec`
+
+## Quick test before trusting it
+
+This one only accepts POST (not a URL you can just paste into a browser
+tab), since the visitor's email address shouldn't sit in a URL/log. Test
+with a POST request, e.g. from a browser console:
+
+```js
+fetch("https://script.google.com/macros/s/.../exec", {
+  method: "POST",
+  body: JSON.stringify({ to: "jewelsharpist@gmail.com", subject: "Test", body: "Just a test." })
+}).then(r => r.text()).then(console.log)
+```
+
+You should see `{"sent":true}` and a real email arrive.

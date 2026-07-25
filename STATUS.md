@@ -266,8 +266,44 @@
   phase lists render correctly with their custom-quote links; empty-
   selection validation error fires correctly; no console errors.
 
+## DONE (cont'd, 2026-07-25/26) — Live Deploy, Time Dropdowns, Address Validation, Estimate Emailed Instead of Shown
+- **The entire quoting tool went live on jewelsharpist.com for the first
+  time this round** - all 7 prior commits were pushed and fast-forward
+  merged into `main`. Before this, none of the estimate tool had ever
+  been on the actual production site despite being built over several
+  earlier rounds.
+- Arrival/Departure Time relabeled to Start/End Time; Event Date + Start
+  + End Time combined onto one row; both time fields changed from native
+  browser time pickers to 12-hour AM/PM dropdowns in 15-minute increments
+  (value stays 24-hour internally, no other logic changed).
+- Street Address now requires a number AND a street name (rejects "Main
+  Street" with no house number); ZIP was already 5-digits-only.
+- State dropdown narrowed from all 50 states to just GA/FL/SC, since
+  anything past 200 miles already needs a manual custom quote - flagged
+  as an approximation, not real 200-mile enforcement (that's still the
+  live driving-distance check). Real fix (a full 200-mile ZIP radius
+  list) noted as a future task, not built yet.
+- **Caught and fixed a real regression**: a blocked-Edit-tool incident
+  mid-round had silently corrupted `renderPhaseGroup()`, breaking every
+  phase duration dropdown (and therefore every estimate calculation) -
+  shipped in a commit before being caught during unrelated testing.
+- **Biggest change: the estimate total no longer shows on the page at
+  all.** At the user's request (raise the bar against scraping/repeated
+  querying of the pricing tool), email is now required before "Get My
+  Estimate," and clicking it emails the visitor their own estimate via a
+  newly deployed Google Apps Script (`send-estimate-email.gs`, same
+  no-new-account pattern as the calendar checker) instead of displaying
+  a breakdown. The page just confirms "Check your inbox!" Julia's own
+  copy (sent later via the existing Formspree submission) is unchanged -
+  still gets the full breakdown with the rate formula.
+- Deployed and verified for real: two live test emails sent to
+  jewelsharpist@gmail.com (one direct to the Apps Script, one through
+  the real jewelsharpist.com origin to confirm no CORS issue), then a
+  full simulated form submission confirmed the whole pipeline end-to-end.
+
 **NEXT for the quoting tool:** get real prices for the `known_extras`
 catalog if/when Julia wants specific add-ons priced; revisit song pricing
-once the user confirms with Julia whether it's actually changing;
-otherwise this feature is functionally complete.
+once the user confirms with Julia whether it's actually changing; build
+a real 200-mile ZIP-radius list to replace the GA/FL/SC state-dropdown
+approximation; otherwise this feature is functionally complete and live.
 
