@@ -243,6 +243,55 @@
             gap: 1.5rem;
         }
 
+        /* Phase add-on options */
+        .phase-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.2rem;
+            border: 1px solid var(--border);
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .phase-option-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .phase-option-check input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.3rem;
+            cursor: pointer;
+        }
+
+        .phase-option-check label {
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .phase-description {
+            display: block;
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.25rem;
+        }
+
+        .phase-duration {
+            width: auto;
+            min-width: 150px;
+        }
+
+        .phase-duration:disabled {
+            opacity: 0.5;
+        }
+
         /* City / State / Zip row */
         .form-row-address {
             display: grid;
@@ -606,33 +655,89 @@
                         <input type="time" id="eventStartTime" name="eventStartTime" required>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="eventEndTime">Departure Time *</label>
-                        <input type="time" id="eventEndTime" name="eventEndTime" required>
+                <div class="form-group">
+                    <label for="eventEndTime">Departure Time *</label>
+                    <input type="time" id="eventEndTime" name="eventEndTime" required>
+                </div>
+                <p class="form-hint">We check arrival/departure against Julia's calendar automatically. Final confirmation still comes from Julia when she follows up.</p>
+
+                <!-- Wedding: named phase add-ons -->
+                <div class="form-group" id="phasesWeddingGroup" style="display: none;">
+                    <span class="group-label">Want to add any of these? (optional)</span>
+                    <div class="phase-option">
+                        <div class="phase-option-check">
+                            <input type="checkbox" id="phaseCocktailHour">
+                            <label for="phaseCocktailHour">Cocktail Hour
+                                <span class="phase-description">Background music while guests mingle with drinks after the ceremony, before the reception starts.</span>
+                            </label>
+                        </div>
+                        <select id="phaseCocktailHourDuration" class="phase-duration" disabled>
+                            <option value="1" selected>1 hr (suggested)</option>
+                            <option value="1.5">1.5 hrs</option>
+                            <option value="2">2 hrs</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label for="totalPlayHours">Total Play Time *</label>
-                        <select id="totalPlayHours" name="totalPlayHoursInput" required>
-                            <option value="1">1 hour (included in the base price)</option>
-                            <option value="1.5">1.5 hours</option>
-                            <option value="2">2 hours</option>
-                            <option value="2.5">2.5 hours</option>
-                            <option value="3">3 hours</option>
-                            <option value="3.5">3.5 hours</option>
-                            <option value="4">4 hours</option>
-                            <option value="4.5">4.5 hours</option>
-                            <option value="5">5 hours</option>
-                            <option value="5.5">5.5 hours</option>
-                            <option value="6">6 hours</option>
-                            <option value="6.5">6.5 hours</option>
-                            <option value="7">7 hours</option>
-                            <option value="7.5">7.5 hours</option>
-                            <option value="8">8 hours</option>
+                    <div class="phase-option">
+                        <div class="phase-option-check">
+                            <input type="checkbox" id="phaseDinnerMusic">
+                            <label for="phaseDinnerMusic">Dinner / Reception Music
+                                <span class="phase-description">Background music during the meal, before things transition to dancing.</span>
+                            </label>
+                        </div>
+                        <select id="phaseDinnerMusicDuration" class="phase-duration" disabled>
+                            <option value="1" selected>1 hr (suggested)</option>
+                            <option value="1.5">1.5 hrs</option>
+                            <option value="2">2 hrs</option>
                         </select>
                     </div>
                 </div>
-                <p class="form-hint">We check arrival/departure against Julia's calendar automatically. If there's a gap between arrival and when she's actually playing (e.g. a morning ceremony and an evening reception), a downtime fee may apply — shown in your estimate below. Final confirmation still comes from Julia when she follows up.</p>
+
+                <!-- Funeral/Memorial: named phase add-ons -->
+                <div class="form-group" id="phasesFuneralGroup" style="display: none;">
+                    <span class="group-label">Want to add any of these? (optional)</span>
+                    <div class="phase-option">
+                        <div class="phase-option-check">
+                            <input type="checkbox" id="phaseVisitation">
+                            <label for="phaseVisitation">Visitation / Viewing
+                                <span class="phase-description">A separate gathering where guests pay respects before the formal service.</span>
+                            </label>
+                        </div>
+                        <select id="phaseVisitationDuration" class="phase-duration" disabled>
+                            <option value="1" selected>1 hr (suggested)</option>
+                            <option value="1.5">1.5 hrs</option>
+                            <option value="2">2 hrs</option>
+                        </select>
+                    </div>
+                    <div class="phase-option">
+                        <div class="phase-option-check">
+                            <input type="checkbox" id="phaseRepast">
+                            <label for="phaseRepast">Repast / Reception
+                                <span class="phase-description">A gathering after the service where family and friends come together.</span>
+                            </label>
+                        </div>
+                        <select id="phaseRepastDuration" class="phase-duration" disabled>
+                            <option value="1" selected>1 hr (suggested)</option>
+                            <option value="1.5">1.5 hrs</option>
+                            <option value="2">2 hrs</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Party/Corporate: simple additional time -->
+                <div class="form-group" id="partyHoursGroup" style="display: none;">
+                    <label for="partyAdditionalHours">Additional Play Time (optional)</label>
+                    <select id="partyAdditionalHours">
+                        <option value="0" selected>None (just the first hour)</option>
+                        <option value="0.5">+30 min</option>
+                        <option value="1">+1 hour</option>
+                        <option value="1.5">+1.5 hours</option>
+                        <option value="2">+2 hours</option>
+                        <option value="2.5">+2.5 hours</option>
+                        <option value="3">+3 hours</option>
+                        <option value="3.5">+3.5 hours</option>
+                        <option value="4">+4 hours</option>
+                    </select>
+                </div>
 
                 <!-- Venue Address -->
                 <div class="form-group">
@@ -794,7 +899,18 @@
         const eventDateInput = document.getElementById('eventDate');
         const eventStartTimeInput = document.getElementById('eventStartTime');
         const eventEndTimeInput = document.getElementById('eventEndTime');
-        const totalPlayHoursSelect = document.getElementById('totalPlayHours');
+        const phasesWeddingGroup = document.getElementById('phasesWeddingGroup');
+        const phasesFuneralGroup = document.getElementById('phasesFuneralGroup');
+        const partyHoursGroup = document.getElementById('partyHoursGroup');
+        const phaseCocktailHour = document.getElementById('phaseCocktailHour');
+        const phaseCocktailHourDuration = document.getElementById('phaseCocktailHourDuration');
+        const phaseDinnerMusic = document.getElementById('phaseDinnerMusic');
+        const phaseDinnerMusicDuration = document.getElementById('phaseDinnerMusicDuration');
+        const phaseVisitation = document.getElementById('phaseVisitation');
+        const phaseVisitationDuration = document.getElementById('phaseVisitationDuration');
+        const phaseRepast = document.getElementById('phaseRepast');
+        const phaseRepastDuration = document.getElementById('phaseRepastDuration');
+        const partyAdditionalHours = document.getElementById('partyAdditionalHours');
         const streetAddressInput = document.getElementById('streetAddress');
         const cityInput = document.getElementById('city');
         const stateSelect = document.getElementById('state');
@@ -822,10 +938,34 @@
             return checked ? checked.value : null;
         }
 
+        function updatePhaseGroups() {
+            const eventType = currentEventType();
+            phasesWeddingGroup.style.display = eventType === 'wedding' ? 'block' : 'none';
+            phasesFuneralGroup.style.display = eventType === 'funeral' ? 'block' : 'none';
+            partyHoursGroup.style.display = eventType === 'party' ? 'block' : 'none';
+        }
+
         eventTypeInputs.forEach(function (input) {
             input.addEventListener('change', function () {
+                updatePhaseGroups();
                 quoteResult.classList.remove('show');
                 submitButton.disabled = true;
+            });
+        });
+
+        [
+            [phaseCocktailHour, phaseCocktailHourDuration],
+            [phaseDinnerMusic, phaseDinnerMusicDuration],
+            [phaseVisitation, phaseVisitationDuration],
+            [phaseRepast, phaseRepastDuration]
+        ].forEach(function (pair) {
+            const checkbox = pair[0];
+            const durationSelect = pair[1];
+            checkbox.addEventListener('change', function () {
+                durationSelect.disabled = !checkbox.checked;
+                if (checkbox.checked) {
+                    durationSelect.value = '1';
+                }
             });
         });
 
@@ -841,13 +981,46 @@
             return street + ', ' + city + ', ' + state + ' ' + zip;
         }
 
+        function getAdditionalPlayHours() {
+            const eventType = currentEventType();
+            if (eventType === 'wedding') {
+                let hrs = 0;
+                if (phaseCocktailHour.checked) hrs += parseFloat(phaseCocktailHourDuration.value);
+                if (phaseDinnerMusic.checked) hrs += parseFloat(phaseDinnerMusicDuration.value);
+                return hrs;
+            }
+            if (eventType === 'funeral') {
+                let hrs = 0;
+                if (phaseVisitation.checked) hrs += parseFloat(phaseVisitationDuration.value);
+                if (phaseRepast.checked) hrs += parseFloat(phaseRepastDuration.value);
+                return hrs;
+            }
+            if (eventType === 'party') {
+                return parseFloat(partyAdditionalHours.value) || 0;
+            }
+            return 0;
+        }
+
+        function getSelectedPhaseLabels() {
+            const eventType = currentEventType();
+            const labels = [];
+            if (eventType === 'wedding') {
+                if (phaseCocktailHour.checked) labels.push('Cocktail Hour');
+                if (phaseDinnerMusic.checked) labels.push('Dinner / Reception Music');
+            } else if (eventType === 'funeral') {
+                if (phaseVisitation.checked) labels.push('Visitation / Viewing');
+                if (phaseRepast.checked) labels.push('Repast / Reception');
+            }
+            return labels;
+        }
+
         function buildParamsWithoutDistance() {
             const eventType = currentEventType();
             if (!eventType) {
                 throw new Error('Please choose an event type.');
             }
 
-            const totalPlayHours = parseFloat(totalPlayHoursSelect.value);
+            const totalPlayHours = 1 + getAdditionalPlayHours();
 
             return { eventType: eventType, totalPlayHours: totalPlayHours, extras: [] };
         }
@@ -858,7 +1031,7 @@
             return (end - start) / (1000 * 60 * 60);
         }
 
-        function renderQuote(quote) {
+        function renderQuote(quote, phaseLabels) {
             let html = '';
 
             if (quote.needsCustomQuote) {
@@ -870,10 +1043,12 @@
                 }
                 html += '</div>';
             } else {
+                const totalPlayHoursDisplay = 1 + quote.additionalPlayTime.hours;
+                const packagePrice = quote.base.price + quote.additionalPlayTime.price;
                 html += '<div class="quote-breakdown">';
-                html += '<div class="quote-line"><span class="quote-line-label">' + quote.base.label + '</span><span class="quote-line-amount">' + money(quote.base.price) + '</span></div>';
-                if (quote.additionalPlayTime.hours > 0) {
-                    html += '<div class="quote-line"><span class="quote-line-label">' + quote.additionalPlayTime.hours + ' additional hour(s) of playing (' + quote.additionalPlayTime.rateDescription + ')</span><span class="quote-line-amount">' + money(quote.additionalPlayTime.price) + '</span></div>';
+                html += '<div class="quote-line"><span class="quote-line-label">Performance Package (' + totalPlayHoursDisplay + (totalPlayHoursDisplay === 1 ? ' hr' : ' hrs') + ' of playing)</span><span class="quote-line-amount">' + money(packagePrice) + '</span></div>';
+                if (phaseLabels && phaseLabels.length > 0) {
+                    html += '<div class="quote-line"><span class="quote-line-label">Includes: ' + phaseLabels.join(', ') + '</span><span class="quote-line-amount"></span></div>';
                 }
                 if (quote.downtime.applies) {
                     html += '<div class="quote-line"><span class="quote-line-label">Downtime (' + quote.downtime.gapHours + ' hr gap between arrival and playing, over double the play time)</span><span class="quote-line-amount">' + money(quote.downtime.fee) + '</span></div>';
@@ -908,7 +1083,7 @@
             return "Julia already has something booked from " + startLocal + " to " + endLocal + " that day (plus a 2-hour buffer after it ends). Please choose a different date or time, or contact her directly to check alternatives.";
         }
 
-        function buildSummaryText(quote, address) {
+        function buildSummaryText(quote, address, phaseLabels) {
             const lines = [];
             lines.push('Event type: ' + quote.eventType);
             lines.push('Arrival: ' + eventDateInput.value + ' at ' + eventStartTimeInput.value);
@@ -918,7 +1093,10 @@
             if (quote.needsCustomQuote) {
                 lines.push('NEEDS CUSTOM QUOTE: ' + quote.customQuoteReason);
             } else {
-                lines.push('Additional play time: ' + quote.additionalPlayTime.hours + ' hr(s) - ' + money(quote.additionalPlayTime.price));
+                lines.push('Additional play time: ' + quote.additionalPlayTime.hours + ' hr(s) (' + quote.additionalPlayTime.rateDescription + ') - ' + money(quote.additionalPlayTime.price));
+                if (phaseLabels && phaseLabels.length > 0) {
+                    lines.push('Selected add-ons: ' + phaseLabels.join(', '));
+                }
                 if (quote.downtime.applies) {
                     lines.push('Downtime: ' + quote.downtime.gapHours + ' hr(s) - ' + money(quote.downtime.fee));
                 }
@@ -990,11 +1168,12 @@
                 params.distanceMiles = distanceMiles;
                 params.totalSpanHours = spanHours;
                 const quote = calculateQuote(params);
-                renderQuote(quote);
+                const phaseLabels = getSelectedPhaseLabels();
+                renderQuote(quote, phaseLabels);
                 quoteResult.classList.add('show');
                 submitButton.disabled = false;
 
-                quoteSummaryField.value = buildSummaryText(quote, fullAddress());
+                quoteSummaryField.value = buildSummaryText(quote, fullAddress(), phaseLabels);
                 formSubject.value = 'New Estimate Request - ' + quote.eventType + ' - ' +
                     (quote.needsCustomQuote ? 'Needs custom quote' : money(quote.total));
 
@@ -1038,6 +1217,7 @@
         });
 
         window.addEventListener('load', function () {
+            updatePhaseGroups();
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('success')) {
                 successMessage.classList.add('show');

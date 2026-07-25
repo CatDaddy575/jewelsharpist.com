@@ -208,6 +208,28 @@
   user wants to confirm a proposed policy change with Julia first before
   that gets touched.
 
+## DONE (cont'd, 2026-07-25 round 8) — Phase-Based Add-Ons, Pricing Hidden from Visitors
+- Replaced the single "Total Play Time" dropdown with named add-on
+  checkboxes specific to each event type: Wedding gets Cocktail Hour +
+  Dinner/Reception Music, Funeral/Memorial gets Visitation/Viewing +
+  Repast/Reception - each with a suggested default duration (1 hr) that
+  visitors can bump up. Party/Corporate stays a simple additional-hours
+  dropdown since those events don't have standard nameable phases.
+  Total Play Time is now computed internally and never shown as an input.
+- No pricing math changed - this is purely how the total-hours number
+  gets built and displayed.
+- New requirement: the per-half-hour pricing formula is no longer shown
+  to visitors at all, to prevent competitors from reverse-engineering the
+  rate card. The on-page estimate now shows one combined "Performance
+  Package" price (base + additional time folded together) plus a plain
+  "Includes: X, Y" list with no per-phase dollar amounts. Travel and
+  downtime stay as separate visible line items. The full breakdown
+  (including the rate formula) still goes to Julia in the emailed summary
+  - she needs the real numbers even though visitors don't see them.
+- Verified all three event types end-to-end with real combinations,
+  including confirming the downtime line correctly disappears when a gap
+  doesn't cross the 2x threshold. Mobile layout confirmed clean.
+
 **NEXT for the quoting tool:** get real prices for the `known_extras`
 catalog if/when Julia wants specific add-ons priced; revisit song pricing
 once the user confirms with Julia whether it's actually changing;
