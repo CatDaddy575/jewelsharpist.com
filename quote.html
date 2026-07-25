@@ -243,6 +243,13 @@
             gap: 1.5rem;
         }
 
+        /* Three-up field row (date + start + end time) */
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+
         /* Phase add-on options */
         .phase-option {
             display: flex;
@@ -579,6 +586,7 @@
             }
 
             .form-row,
+            .form-row-3,
             .form-row-address {
                 grid-template-columns: 1fr;
             }
@@ -645,19 +653,19 @@
                 </div>
 
                 <!-- Event Date & Time -->
-                <div class="form-row">
+                <div class="form-row-3">
                     <div class="form-group">
                         <label for="eventDate">Event Date *</label>
                         <input type="date" id="eventDate" name="eventDate" required min="">
                     </div>
                     <div class="form-group">
-                        <label for="eventStartTime">Arrival Time *</label>
-                        <input type="time" id="eventStartTime" name="eventStartTime" required>
+                        <label for="eventStartTime">Start Time *</label>
+                        <select id="eventStartTime" name="eventStartTime" required></select>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="eventEndTime">Departure Time *</label>
-                    <input type="time" id="eventEndTime" name="eventEndTime" required>
+                    <div class="form-group">
+                        <label for="eventEndTime">End Time *</label>
+                        <select id="eventEndTime" name="eventEndTime" required></select>
+                    </div>
                 </div>
                 <p class="form-hint">We check arrival/departure against Julia's calendar automatically. Final confirmation still comes from Julia when she follows up.</p>
 
@@ -803,6 +811,24 @@
             const today = new Date().toISOString().split('T')[0];
             eventDateInput.min = today;
         }
+
+        function buildTimeOptions(selectEl) {
+            let html = '<option value="">Select</option>';
+            for (let totalMin = 0; totalMin < 24 * 60; totalMin += 15) {
+                const h24 = Math.floor(totalMin / 60);
+                const m = totalMin % 60;
+                const value = String(h24).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+                let h12 = h24 % 12;
+                if (h12 === 0) h12 = 12;
+                const ampm = h24 < 12 ? 'AM' : 'PM';
+                const label = h12 + ':' + String(m).padStart(2, '0') + ' ' + ampm;
+                html += '<option value="' + value + '">' + label + '</option>';
+            }
+            selectEl.innerHTML = html;
+        }
+
+        buildTimeOptions(eventStartTimeInput);
+        buildTimeOptions(eventEndTimeInput);
 
         formNext.value = window.location.origin + window.location.pathname + '?success=1';
 
