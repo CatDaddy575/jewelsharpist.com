@@ -682,7 +682,7 @@
                 <!-- Venue Address -->
                 <div class="form-group">
                     <label for="streetAddress">Street Address *</label>
-                    <input type="text" id="streetAddress" name="streetAddress" required placeholder="e.g. 123 Main St">
+                    <input type="text" id="streetAddress" name="streetAddress" required pattern="(?=.*\d)(?=.*[A-Za-z]).+" title="Include a street number, e.g. 123 Main St" placeholder="e.g. 123 Main St">
                 </div>
                 <div class="form-row-address" id="addressRow2">
                     <div class="form-group">
@@ -862,6 +862,7 @@
                 [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5].forEach(function (add) {
                     const v = def.suggested + add;
                     const label = formatDuration(v) + (add === 0 ? ' (suggested)' : '');
+                    optionsHtml += '<option value="' + v + '"' + (add === 0 ? ' selected' : '') + '>' + label + '</option>';
                 });
                 html += '<div class="phase-option">';
                 html += '<div class="phase-option-check">';
@@ -1058,6 +1059,12 @@
 
             if (!streetAddressInput.value.trim() || !cityInput.value.trim() || !stateSelect.value) {
                 calcError.textContent = 'Please fill in the street address, city, and state.';
+                calcError.classList.add('show');
+                return;
+            }
+            const street = streetAddressInput.value.trim();
+            if (!/\d/.test(street) || !/[A-Za-z]/.test(street)) {
+                calcError.textContent = 'Street address must include a street number and street name (e.g. 123 Main St).';
                 calcError.classList.add('show');
                 return;
             }
