@@ -661,82 +661,22 @@
                 </div>
                 <p class="form-hint">We check arrival/departure against Julia's calendar automatically. Final confirmation still comes from Julia when she follows up.</p>
 
-                <!-- Wedding: named phase add-ons -->
+                <!-- Wedding: named phase line items -->
                 <div class="form-group" id="phasesWeddingGroup" style="display: none;">
-                    <span class="group-label">Want to add any of these? (optional)</span>
-                    <div class="phase-option">
-                        <div class="phase-option-check">
-                            <input type="checkbox" id="phaseCocktailHour">
-                            <label for="phaseCocktailHour">Cocktail Hour
-                                <span class="phase-description">Background music while guests mingle with drinks after the ceremony, before the reception starts.</span>
-                            </label>
-                        </div>
-                        <select id="phaseCocktailHourDuration" class="phase-duration" disabled>
-                            <option value="1" selected>1 hr (suggested)</option>
-                            <option value="1.5">1.5 hrs</option>
-                            <option value="2">2 hrs</option>
-                        </select>
-                    </div>
-                    <div class="phase-option">
-                        <div class="phase-option-check">
-                            <input type="checkbox" id="phaseDinnerMusic">
-                            <label for="phaseDinnerMusic">Dinner / Reception Music
-                                <span class="phase-description">Background music during the meal, before things transition to dancing.</span>
-                            </label>
-                        </div>
-                        <select id="phaseDinnerMusicDuration" class="phase-duration" disabled>
-                            <option value="1" selected>1 hr (suggested)</option>
-                            <option value="1.5">1.5 hrs</option>
-                            <option value="2">2 hrs</option>
-                        </select>
-                    </div>
+                    <div id="phasesWedding"></div>
+                    <p class="form-hint">Want something not listed here? <a href="contact.html">Contact Julia</a> for a custom quote.</p>
                 </div>
 
-                <!-- Funeral/Memorial: named phase add-ons -->
+                <!-- Funeral/Memorial: named phase line items -->
                 <div class="form-group" id="phasesFuneralGroup" style="display: none;">
-                    <span class="group-label">Want to add any of these? (optional)</span>
-                    <div class="phase-option">
-                        <div class="phase-option-check">
-                            <input type="checkbox" id="phaseVisitation">
-                            <label for="phaseVisitation">Visitation / Viewing
-                                <span class="phase-description">A separate gathering where guests pay respects before the formal service.</span>
-                            </label>
-                        </div>
-                        <select id="phaseVisitationDuration" class="phase-duration" disabled>
-                            <option value="1" selected>1 hr (suggested)</option>
-                            <option value="1.5">1.5 hrs</option>
-                            <option value="2">2 hrs</option>
-                        </select>
-                    </div>
-                    <div class="phase-option">
-                        <div class="phase-option-check">
-                            <input type="checkbox" id="phaseRepast">
-                            <label for="phaseRepast">Repast / Reception
-                                <span class="phase-description">A gathering after the service where family and friends come together.</span>
-                            </label>
-                        </div>
-                        <select id="phaseRepastDuration" class="phase-duration" disabled>
-                            <option value="1" selected>1 hr (suggested)</option>
-                            <option value="1.5">1.5 hrs</option>
-                            <option value="2">2 hrs</option>
-                        </select>
-                    </div>
+                    <div id="phasesFuneral"></div>
+                    <p class="form-hint">Want something not listed here? <a href="contact.html">Contact Julia</a> for a custom quote.</p>
                 </div>
 
-                <!-- Party/Corporate: simple additional time -->
-                <div class="form-group" id="partyHoursGroup" style="display: none;">
-                    <label for="partyAdditionalHours">Additional Play Time (optional)</label>
-                    <select id="partyAdditionalHours">
-                        <option value="0" selected>None (just the first hour)</option>
-                        <option value="0.5">+30 min</option>
-                        <option value="1">+1 hour</option>
-                        <option value="1.5">+1.5 hours</option>
-                        <option value="2">+2 hours</option>
-                        <option value="2.5">+2.5 hours</option>
-                        <option value="3">+3 hours</option>
-                        <option value="3.5">+3.5 hours</option>
-                        <option value="4">+4 hours</option>
-                    </select>
+                <!-- Party/Corporate: named phase line items -->
+                <div class="form-group" id="phasesPartyGroup" style="display: none;">
+                    <div id="phasesParty"></div>
+                    <p class="form-hint">Want something not listed here? <a href="contact.html">Contact Julia</a> for a custom quote.</p>
                 </div>
 
                 <!-- Venue Address -->
@@ -753,57 +693,9 @@
                         <label for="state">State *</label>
                         <select id="state" name="state" required>
                             <option value="">Select</option>
-                            <option value="AL">Alabama</option>
-                            <option value="AK">Alaska</option>
-                            <option value="AZ">Arizona</option>
-                            <option value="AR">Arkansas</option>
-                            <option value="CA">California</option>
-                            <option value="CO">Colorado</option>
-                            <option value="CT">Connecticut</option>
-                            <option value="DE">Delaware</option>
                             <option value="FL">Florida</option>
                             <option value="GA">Georgia</option>
-                            <option value="HI">Hawaii</option>
-                            <option value="ID">Idaho</option>
-                            <option value="IL">Illinois</option>
-                            <option value="IN">Indiana</option>
-                            <option value="IA">Iowa</option>
-                            <option value="KS">Kansas</option>
-                            <option value="KY">Kentucky</option>
-                            <option value="LA">Louisiana</option>
-                            <option value="ME">Maine</option>
-                            <option value="MD">Maryland</option>
-                            <option value="MA">Massachusetts</option>
-                            <option value="MI">Michigan</option>
-                            <option value="MN">Minnesota</option>
-                            <option value="MS">Mississippi</option>
-                            <option value="MO">Missouri</option>
-                            <option value="MT">Montana</option>
-                            <option value="NE">Nebraska</option>
-                            <option value="NV">Nevada</option>
-                            <option value="NH">New Hampshire</option>
-                            <option value="NJ">New Jersey</option>
-                            <option value="NM">New Mexico</option>
-                            <option value="NY">New York</option>
-                            <option value="NC">North Carolina</option>
-                            <option value="ND">North Dakota</option>
-                            <option value="OH">Ohio</option>
-                            <option value="OK">Oklahoma</option>
-                            <option value="OR">Oregon</option>
-                            <option value="PA">Pennsylvania</option>
-                            <option value="RI">Rhode Island</option>
                             <option value="SC">South Carolina</option>
-                            <option value="SD">South Dakota</option>
-                            <option value="TN">Tennessee</option>
-                            <option value="TX">Texas</option>
-                            <option value="UT">Utah</option>
-                            <option value="VT">Vermont</option>
-                            <option value="VA">Virginia</option>
-                            <option value="WA">Washington</option>
-                            <option value="WV">West Virginia</option>
-                            <option value="WI">Wisconsin</option>
-                            <option value="WY">Wyoming</option>
-                            <option value="DC">Washington DC</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -901,16 +793,7 @@
         const eventEndTimeInput = document.getElementById('eventEndTime');
         const phasesWeddingGroup = document.getElementById('phasesWeddingGroup');
         const phasesFuneralGroup = document.getElementById('phasesFuneralGroup');
-        const partyHoursGroup = document.getElementById('partyHoursGroup');
-        const phaseCocktailHour = document.getElementById('phaseCocktailHour');
-        const phaseCocktailHourDuration = document.getElementById('phaseCocktailHourDuration');
-        const phaseDinnerMusic = document.getElementById('phaseDinnerMusic');
-        const phaseDinnerMusicDuration = document.getElementById('phaseDinnerMusicDuration');
-        const phaseVisitation = document.getElementById('phaseVisitation');
-        const phaseVisitationDuration = document.getElementById('phaseVisitationDuration');
-        const phaseRepast = document.getElementById('phaseRepast');
-        const phaseRepastDuration = document.getElementById('phaseRepastDuration');
-        const partyAdditionalHours = document.getElementById('partyAdditionalHours');
+        const phasesPartyGroup = document.getElementById('phasesPartyGroup');
         const streetAddressInput = document.getElementById('streetAddress');
         const cityInput = document.getElementById('city');
         const stateSelect = document.getElementById('state');
@@ -938,11 +821,86 @@
             return checked ? checked.value : null;
         }
 
+        const PHASE_DEFS = {
+            wedding: [
+                { id: 'phaseCeremony', label: 'Ceremony', desc: 'Prelude music as guests arrive and are seated, the ceremony itself, and the recessional as you exit — all one continuous block.', suggested: 0.75 },
+                { id: 'phaseCocktailHour', label: 'Cocktail Hour', desc: 'Background music while guests mingle with drinks after the ceremony, before the reception starts.', suggested: 1 },
+                { id: 'phaseDinnerMusic', label: 'Dinner / Reception Music', desc: 'Background music during the meal, before things transition to dancing.', suggested: 1 }
+            ],
+            funeral: [
+                { id: 'phaseService', label: 'Service', desc: 'Prelude music as attendees arrive, the service itself, and the recessional as the family exits — all one continuous block.', suggested: 0.75 },
+                { id: 'phaseVisitation', label: 'Visitation / Viewing', desc: 'A separate gathering where guests pay respects before the formal service.', suggested: 1 },
+                { id: 'phaseRepast', label: 'Repast / Reception', desc: 'A gathering after the service where family and friends come together.', suggested: 1 }
+            ],
+            party: [
+                { id: 'phaseArrival', label: 'Arrival / Cocktail Reception', desc: 'Background music as guests arrive and settle in.', suggested: 1 },
+                { id: 'phaseDinnerActivity', label: 'Dinner / Main Activity', desc: 'Background music during the meal or main part of the event.', suggested: 1 },
+                { id: 'phaseProgram', label: 'Program / Speeches', desc: 'Music bracketing a formal program — toasts, awards, speeches.', suggested: 0.5 },
+                { id: 'phasePostProgram', label: 'Post-Program Mingling', desc: 'Background music continues after the formal part wraps up.', suggested: 1 }
+            ]
+        };
+
+        function formatDuration(hours) {
+            const totalMin = Math.round(hours * 60);
+            const hrs = Math.floor(totalMin / 60);
+            const min = totalMin % 60;
+            let s = '';
+            if (hrs > 0) s += hrs + (hrs === 1 ? ' hr' : ' hrs');
+            if (min > 0) s += (s ? ' ' : '') + min + ' min';
+            return s || '0 min';
+        }
+
+        function roundUpToHalfHour(hours) {
+            return Math.ceil(hours * 2) / 2;
+        }
+
+        function renderPhaseGroup(containerId, defs) {
+            const container = document.getElementById(containerId);
+            let html = '';
+            defs.forEach(function (def) {
+                let optionsHtml = '';
+                [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5].forEach(function (add) {
+                    const v = def.suggested + add;
+                    const label = formatDuration(v) + (add === 0 ? ' (suggested)' : '');
+                });
+                html += '<div class="phase-option">';
+                html += '<div class="phase-option-check">';
+                html += '<input type="checkbox" id="' + def.id + '">';
+                html += '<label for="' + def.id + '">' + def.label;
+                html += '<span class="phase-description">' + def.desc + '</span>';
+                html += '</label></div>';
+                html += '<select id="' + def.id + 'Duration" class="phase-duration" disabled>' + optionsHtml + '</select>';
+                html += '</div>';
+            });
+            container.innerHTML = html;
+
+            defs.forEach(function (def) {
+                const checkbox = document.getElementById(def.id);
+                const durationSelect = document.getElementById(def.id + 'Duration');
+                checkbox.addEventListener('change', function () {
+                    durationSelect.disabled = !checkbox.checked;
+                });
+            });
+        }
+
+        function getSelectedPhases(eventType) {
+            const defs = PHASE_DEFS[eventType] || [];
+            const selected = [];
+            defs.forEach(function (def) {
+                const checkbox = document.getElementById(def.id);
+                if (checkbox && checkbox.checked) {
+                    const durationSelect = document.getElementById(def.id + 'Duration');
+                    selected.push({ label: def.label, hours: parseFloat(durationSelect.value) });
+                }
+            });
+            return selected;
+        }
+
         function updatePhaseGroups() {
             const eventType = currentEventType();
             phasesWeddingGroup.style.display = eventType === 'wedding' ? 'block' : 'none';
             phasesFuneralGroup.style.display = eventType === 'funeral' ? 'block' : 'none';
-            partyHoursGroup.style.display = eventType === 'party' ? 'block' : 'none';
+            phasesPartyGroup.style.display = eventType === 'party' ? 'block' : 'none';
         }
 
         eventTypeInputs.forEach(function (input) {
@@ -950,22 +908,6 @@
                 updatePhaseGroups();
                 quoteResult.classList.remove('show');
                 submitButton.disabled = true;
-            });
-        });
-
-        [
-            [phaseCocktailHour, phaseCocktailHourDuration],
-            [phaseDinnerMusic, phaseDinnerMusicDuration],
-            [phaseVisitation, phaseVisitationDuration],
-            [phaseRepast, phaseRepastDuration]
-        ].forEach(function (pair) {
-            const checkbox = pair[0];
-            const durationSelect = pair[1];
-            checkbox.addEventListener('change', function () {
-                durationSelect.disabled = !checkbox.checked;
-                if (checkbox.checked) {
-                    durationSelect.value = '1';
-                }
             });
         });
 
@@ -981,37 +923,9 @@
             return street + ', ' + city + ', ' + state + ' ' + zip;
         }
 
-        function getAdditionalPlayHours() {
-            const eventType = currentEventType();
-            if (eventType === 'wedding') {
-                let hrs = 0;
-                if (phaseCocktailHour.checked) hrs += parseFloat(phaseCocktailHourDuration.value);
-                if (phaseDinnerMusic.checked) hrs += parseFloat(phaseDinnerMusicDuration.value);
-                return hrs;
-            }
-            if (eventType === 'funeral') {
-                let hrs = 0;
-                if (phaseVisitation.checked) hrs += parseFloat(phaseVisitationDuration.value);
-                if (phaseRepast.checked) hrs += parseFloat(phaseRepastDuration.value);
-                return hrs;
-            }
-            if (eventType === 'party') {
-                return parseFloat(partyAdditionalHours.value) || 0;
-            }
-            return 0;
-        }
-
         function getSelectedPhaseLabels() {
             const eventType = currentEventType();
-            const labels = [];
-            if (eventType === 'wedding') {
-                if (phaseCocktailHour.checked) labels.push('Cocktail Hour');
-                if (phaseDinnerMusic.checked) labels.push('Dinner / Reception Music');
-            } else if (eventType === 'funeral') {
-                if (phaseVisitation.checked) labels.push('Visitation / Viewing');
-                if (phaseRepast.checked) labels.push('Repast / Reception');
-            }
-            return labels;
+            return getSelectedPhases(eventType).map(function (p) { return p.label; });
         }
 
         function buildParamsWithoutDistance() {
@@ -1020,7 +934,13 @@
                 throw new Error('Please choose an event type.');
             }
 
-            const totalPlayHours = 1 + getAdditionalPlayHours();
+            const selected = getSelectedPhases(eventType);
+            if (selected.length === 0) {
+                throw new Error('Please select at least one part of your event from the list above.');
+            }
+
+            const rawHours = selected.reduce(function (sum, p) { return sum + p.hours; }, 0);
+            const totalPlayHours = Math.max(1, roundUpToHalfHour(rawHours));
 
             return { eventType: eventType, totalPlayHours: totalPlayHours, extras: [] };
         }
@@ -1217,6 +1137,9 @@
         });
 
         window.addEventListener('load', function () {
+            renderPhaseGroup('phasesWedding', PHASE_DEFS.wedding);
+            renderPhaseGroup('phasesFuneral', PHASE_DEFS.funeral);
+            renderPhaseGroup('phasesParty', PHASE_DEFS.party);
             updatePhaseGroups();
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('success')) {

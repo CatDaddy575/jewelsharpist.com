@@ -230,6 +230,42 @@
   including confirming the downtime line correctly disappears when a gap
   doesn't cross the 2x threshold. Mobile layout confirmed clean.
 
+## DONE (cont'd, 2026-07-25 round 9) — Full Phase Line-Item Lists, All Event Types
+- Round 8's 2-checkbox wedding/funeral lists and the simple party dropdown
+  were replaced with a single consistent pattern across all three event
+  types: a flat list of named phase line items (no "optional add-ons"
+  group heading), each with a suggested duration that can be bumped up in
+  15-minute increments.
+  - Wedding: Ceremony (45 min, bundles Prelude+vows+Recessional),
+    Cocktail Hour (1 hr), Dinner/Reception Music (1 hr).
+  - Funeral/Memorial: Service (45 min, bundles Prelude+service+Recessional),
+    Visitation/Viewing (1 hr), Repast/Reception (1 hr).
+  - Party/Corporate: Arrival/Cocktail Reception (1 hr), Dinner/Main
+    Activity (1 hr), Program/Speeches (30 min), Post-Program Mingling
+    (1 hr) - now matches the wedding/funeral structure instead of staying
+    a simple dropdown.
+  - No phase is pre-checked by default anywhere - the base "first hour" is
+    phase-agnostic (whatever's selected, summed, first hour is base rate
+    regardless of composition), so visitors build the event up from a
+    blank slate. A new inline validation error requires at least one
+    phase checked before an estimate can be calculated.
+- Pricing granularity stayed at half-hour blocks (unchanged, unconfirmed
+  with Julia) - the 15-minute phase selections are summed then rounded UP
+  to the nearest half hour before pricing, same "round in Julia's favor"
+  logic as the downtime formula.
+- Added a "Want something not listed here? Contact Julia for a custom
+  quote." line (linking to contact.html) under each event type's phase
+  list, at the user's request.
+- Refactored the phase UI to be data-driven (`PHASE_DEFS` + a shared
+  `renderPhaseGroup()` function in `quote.html`) instead of hand-typed
+  per-phase HTML blocks, since this round tripled the phase count (2 → 10
+  across all three event types).
+- Verified end-to-end in-browser: wedding Ceremony(45min)+Cocktail
+  Hour(1hr) = 1h45m raw → correctly rounds up to 2 hrs → $600 total
+  ($425 base + $100 + $75), no per-phase price shown; funeral and party
+  phase lists render correctly with their custom-quote links; empty-
+  selection validation error fires correctly; no console errors.
+
 **NEXT for the quoting tool:** get real prices for the `known_extras`
 catalog if/when Julia wants specific add-ons priced; revisit song pricing
 once the user confirms with Julia whether it's actually changing;
