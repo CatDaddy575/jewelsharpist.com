@@ -158,11 +158,35 @@
   failed submission can be caught at all). Verified all three failure
   paths in-browser by simulating outages.
 
-**NEXT for the quoting tool:** build the Google Calendar overlap check once
-Julia has a calendar (plan is written up in the "quoting-tool-architecture"
-memory); get real prices for the `known_extras` catalog if/when Julia wants
-specific add-ons priced; design a better long-term approach for gap-time
-(split-schedule) events than the current silent notes-field workaround;
-otherwise this feature is functionally complete pending a decision on
-committing the branch.
+## DONE (cont'd, 2026-07-24 round 6) — Real Google Calendar Availability Check
+- Turned out Julia does have a Google Calendar (jewelsharpist@gmail.com,
+  previously empty/unused). Built and DEPLOYED the real thing this
+  session - not just planned.
+- Used Google Apps Script instead of the earlier Cloudflare Worker plan -
+  runs directly under her already-logged-in Google account, so no new
+  account, no API key, calendar never had to be made public. New files:
+  `apps-script/calendar-availability.gs` (the deployed code) and
+  `apps-script/DEPLOY.md` (deployment guide).
+- Live Web App URL:
+  `https://script.google.com/macros/s/AKfycbzmLtVmUMrTxl_wLcRVDr5O-W8gRIdYsaBeSivMXE9mhIgjqhuo4OpUjRvwtMaXuzwudg/exec`
+  (call with `?date=YYYY-MM-DD`).
+- Added a required "Start Time" field next to Event Date, and a new
+  `availability.js` that checks the requested date/time + duration
+  against her calendar: ANY event blocks time (personal or professional),
+  with a 2-hour buffer AFTER an event ends but none required before.
+- Verified with real calendar events (created and deleted via browser
+  automation during testing, calendar left clean afterward) at every
+  boundary: direct overlap blocked; inside the 2hr buffer blocked; right
+  at the buffer boundary allowed; ending exactly when an existing event
+  starts (zero cushion needed) allowed.
+- Paused mid-deployment to show the user exactly what Google permission
+  scope was being requested (full calendar read/write - Apps Script
+  doesn't offer a narrower option) before proceeding, per standing policy
+  on OAuth/permission grants.
+
+**NEXT for the quoting tool:** get real prices for the `known_extras`
+catalog if/when Julia wants specific add-ons priced; design a better
+long-term approach for gap-time (split-schedule) events than the current
+silent notes-field workaround; otherwise this feature is functionally
+complete pending a decision on committing the branch.
 

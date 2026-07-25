@@ -594,12 +594,18 @@
                     </div>
                 </div>
 
-                <!-- Event Date -->
-                <div class="form-group">
-                    <label for="eventDate">Event Date *</label>
-                    <input type="date" id="eventDate" name="eventDate" required min="">
-                    <p class="form-hint">Submitting a date does not guarantee availability — Julia will confirm when she follows up.</p>
+                <!-- Event Date & Time -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventDate">Event Date *</label>
+                        <input type="date" id="eventDate" name="eventDate" required min="">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventStartTime">Start Time *</label>
+                        <input type="time" id="eventStartTime" name="eventStartTime" required>
+                    </div>
                 </div>
+                <p class="form-hint">We check this against Julia's calendar automatically. Final confirmation still comes from Julia when she follows up.</p>
 
                 <!-- Venue Address -->
                 <div class="form-group">
@@ -757,6 +763,7 @@
 
     <script src="pricing.js"></script>
     <script src="distance.js"></script>
+    <script src="availability.js"></script>
     <script>
         const eventTypeInputs = document.querySelectorAll('input[name="eventType"]');
         const hoursWeddingGroup = document.getElementById('hoursWeddingGroup');
@@ -774,6 +781,7 @@
         const failureModal = document.getElementById('failureModal');
         const failureModalClose = document.getElementById('failureModalClose');
         const eventDateInput = document.getElementById('eventDate');
+        const eventStartTimeInput = document.getElementById('eventStartTime');
         const streetAddressInput = document.getElementById('streetAddress');
         const cityInput = document.getElementById('city');
         const stateSelect = document.getElementById('state');
@@ -885,9 +893,19 @@
             quoteBreakdown.innerHTML = html;
         }
 
+        function formatConflictMessage(conflict) {
+            if (conflict.allDay) {
+                return "Julia already has something booked that entire day. Please choose a different date, or contact her directly to check alternatives.";
+            }
+            const startLocal = new Date(conflict.start).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            const endLocal = new Date(conflict.end).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            return "Julia already has something booked from " + startLocal + " to " + endLocal + " that day (plus a 2-hour buffer after it ends). Please choose a different date or time, or contact her directly to check alternatives.";
+        }
+
         function buildSummaryText(quote, address) {
             const lines = [];
             lines.push('Event type: ' + quote.eventType);
+            lines.push('Event date/time: ' + eventDateInput.value + ' at ' + eventStartTimeInput.value);
             lines.push('Venue address: ' + address);
             lines.push('Base: ' + quote.base.label + ' - ' + money(quote.base.price));
             if (quote.needsCustomQuote) {
@@ -912,6 +930,12 @@
                 return;
             }
 
+            if (!eventDateInput.value || !eventStartTimeInput.value) {
+                calcError.textContent = 'Please choose an event date and start time.';
+                calcError.classList.add('show');
+                return;
+            }
+
             if (!streetAddressInput.value.trim() || !cityInput.value.trim() || !stateSelect.value) {
                 calcError.textContent = 'Please fill in the street address, city, and state.';
                 calcError.classList.add('show');
@@ -929,6 +953,16 @@
             calcButton.textContent = 'Calculating...';
 
             try {
+                const durationHours = 1 + params.addOnHours;
+                const availability = await checkAvailability(eventDateInput.value, eventStartTimeInput.value, durationHours);
+                if (!availability.available) {
+                    calcError.textContent = formatConflictMessage(availability.conflict);
+                    calcError.classList.add('show');
+                    quoteResult.classList.remove('show');
+                    submitButton.disabled = true;
+                    return;
+                }
+
                 const distanceResult = await estimateDistanceFromZip(zip);
                 const distanceMiles = distanceResult.drivingMiles;
 
