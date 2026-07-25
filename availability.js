@@ -8,22 +8,25 @@
  * AFTER an event ends but NOT before - a new booking can run right up to
  * the start of an existing appointment with no cushion required going in.
  *
- * Duration for the requested booking is (1 + addOnHours) hours, matching
- * the same "base hour + add-on hours" shape quote_pricing_bubba already
- * uses for every event type.
+ * CHANGED 2026-07-24: the form now collects an explicit departure time
+ * (not just a duration derived from play hours), since the estimate tool
+ * separately tracks "how long Julia plays" vs. "how long she's on-site"
+ * (downtime formula). This checks the FULL on-site span - that's when
+ * she's actually unavailable for another booking, not just the playing
+ * portion.
  */
 
 const AVAILABILITY_API_URL = "https://script.google.com/macros/s/AKfycbzmLtVmUMrTxl_wLcRVDr5O-W8gRIdYsaBeSivMXE9mhIgjqhuo4OpUjRvwtMaXuzwudg/exec";
 const BUFFER_HOURS_AFTER = 2;
 
 /**
- * Checks whether a requested date/time/duration conflicts with anything
- * on Julia's calendar. Returns { available: true } or
+ * Checks whether a requested date/start-time/end-time span conflicts with
+ * anything on Julia's calendar. Returns { available: true } or
  * { available: false, conflict: { title, start, end } }.
  * Throws a plain Error (not InvalidZipError) on a system-level failure -
  * the caller treats that as any other system failure (shows the modal).
  */
-async function checkAvailability(dateStr, startTimeStr, durationHours) {
+async function checkAvailability(dateStr, startTimeStr, endTimeStr) {
     let response;
     try {
         response = await fetch(AVAILABILITY_API_URL + "?date=" + encodeURIComponent(dateStr));
@@ -40,7 +43,7 @@ async function checkAvailability(dateStr, startTimeStr, durationHours) {
     }
 
     const requestStart = new Date(dateStr + "T" + startTimeStr);
-    const requestEnd = new Date(requestStart.getTime() + durationHours * 60 * 60 * 1000);
+    const requestEnd = new Date(dateStr + "T" + endTimeStr);
 
     for (const ev of data.busy) {
         if (ev.allDay) {

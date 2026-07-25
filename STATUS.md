@@ -184,9 +184,32 @@
   doesn't offer a narrower option) before proceeding, per standing policy
   on OAuth/permission grants.
 
+## DONE (cont'd, 2026-07-24 round 7) — Unified Pricing Model + Downtime Formula
+- Full rewrite of the pricing engine (`quote_pricing_bubba` + `pricing.js`):
+  every event type now works the same way - base price covers the first
+  hour, additional PLAYING time is priced at +$100 first additional half
+  hour / +$75 each half hour after (replaces the old whole-hour curve),
+  and a downtime formula prices gaps automatically instead of refusing.
+- Downtime formula: if arrival-to-departure span exceeds double the total
+  play time, the ENTIRE gap is billed at $20/hr. This retires the old
+  "gapped event → needs custom quote, Julia follows up manually" behavior
+  that was flagged as an open problem in the previous round - gaps now
+  get a real automatic price.
+- Form changed: removed the two old per-event-type hours fields, replaced
+  with one universal "Total Play Time" dropdown used by every event type.
+  Added a required "Departure Time" field alongside "Arrival Time" (the
+  calendar-conflict check now uses this real departure time instead of a
+  duration estimate - more accurate than before).
+- Verified against the user's own worked example exactly: 10am arrival,
+  5pm departure, 2 hrs play time → $425 base + $175 additional play +
+  $100 downtime = $700 total. Re-verified the calendar conflict check
+  still works correctly with the new arrival/departure fields.
+- Deliberately NOT changed: song pricing stays "unlimited free" - the
+  user wants to confirm a proposed policy change with Julia first before
+  that gets touched.
+
 **NEXT for the quoting tool:** get real prices for the `known_extras`
-catalog if/when Julia wants specific add-ons priced; design a better
-long-term approach for gap-time (split-schedule) events than the current
-silent notes-field workaround; otherwise this feature is functionally
-complete pending a decision on committing the branch.
+catalog if/when Julia wants specific add-ons priced; revisit song pricing
+once the user confirms with Julia whether it's actually changing;
+otherwise this feature is functionally complete.
 

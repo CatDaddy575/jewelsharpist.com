@@ -8,17 +8,25 @@
  * source of truth; if a rate ever changes, update the bubba first, then
  * mirror the change here.
  *
+ * REVISED 2026-07-24 to a single unified model across all event types:
+ * base price includes the first hour, additional play time is priced in
+ * half-hour increments ($100 first additional half hour, $75 each half
+ * hour after - exactly the old $200/$150 whole-hour curve halved), and a
+ * downtime formula replaced the old "gap time -> needs custom quote"
+ * refusal: if the total on-site span exceeds DOUBLE the total play time,
+ * the ENTIRE gap (not just the excess) is billed at a flat $/hour rate.
+ *
  * distanceMiles must be REAL driving distance (see distance.js) - beyond
- * travel.customQuoteBeyondMiles (200), this refuses a total the same way
- * gap-time does, since a venue that far needs an overnight stay and meal
- * per diem with no fixed rate.
+ * travel.customQuoteBeyondMiles (200), this refuses a total (this is now
+ * the ONLY refusal case), since a venue that far needs an overnight stay
+ * and meal per diem with no fixed rate.
  */
 
 const PRICING_RULES = {
     eventTypes: {
         wedding: {
             basePrice: 425,
-            baseLabel: "Wedding ceremony (flat) — includes arrival ~30 min prior and any requested song with 2 weeks notice"
+            baseLabel: "Wedding performance — first hour (includes arrival ~30 min prior and any requested song with 2 weeks notice)"
         },
         party: {
             basePrice: 325,
@@ -29,9 +37,13 @@ const PRICING_RULES = {
             baseLabel: "Funeral/memorial performance — standard rate, first hour"
         }
     },
-    additionalHourRates: {
-        firstHour: 200,
-        eachHourAfter: 150
+    additionalHalfHourRates: {
+        firstHalfHour: 100,
+        eachHalfHourAfter: 75
+    },
+    downtime: {
+        thresholdMultiplier: 2,
+        ratePerHour: 20
     },
     travel: {
         freeRadiusMiles: 25,
@@ -53,10 +65,27 @@ function round2(n) {
     return Math.round(n * 100) / 100;
 }
 
-function additionalHoursPrice(count) {
-    if (count <= 0) return 0;
-    const rates = PRICING_RULES.additionalHourRates;
-    return rates.firstHour + rates.eachHourAfter * (count - 1);
+function additionalPlayTimePrice(additionalHalfHours) {
+    if (additionalHalfHours <= 0) return 0;
+    const rates = PRICING_RULES.additionalHalfHourRates;
+    return rates.firstHalfHour + rates.eachHalfHourAfter * (additionalHalfHours - 1);
+}
+
+function calculateDowntime(totalSpanHours, totalPlayHours) {
+    const { thresholdMultiplier, ratePerHour } = PRICING_RULES.downtime;
+    const thresholdHours = thresholdMultiplier * totalPlayHours;
+    const applies = totalSpanHours > thresholdHours;
+    const gapHours = round2(totalSpanHours - totalPlayHours);
+    const fee = applies ? round2(gapHours * ratePerHour) : 0;
+    return {
+        applies: applies,
+        spanHours: totalSpanHours,
+        playHours: totalPlayHours,
+        thresholdHours: thresholdHours,
+        gapHours: gapHours,
+        ratePerHour: ratePerHour,
+        fee: fee
+    };
 }
 
 function calculateTravel(distanceMiles) {
@@ -90,9 +119,9 @@ function resolveExtras(extras) {
 
 /**
  * Mirrors quote_pricing_bubba.py's handler() exactly - same required
- * fields, same refusal to invent a total for gap-time events.
+ * fields, same refusal to invent a total beyond the 200-mile gate.
  *
- * params: { eventType, distanceMiles, addOnHours = 0, hasGap = false, extras = [] }
+ * params: { eventType, distanceMiles, totalPlayHours = 1, totalSpanHours = totalPlayHours, extras = [] }
  */
 function calculateQuote(params) {
     const eventType = params.eventType;
@@ -105,12 +134,19 @@ function calculateQuote(params) {
         throw new Error("Please enter a valid, non-negative travel distance.");
     }
 
-    const addOnHours = Number.isInteger(params.addOnHours) ? params.addOnHours : parseInt(params.addOnHours || 0, 10);
-    if (isNaN(addOnHours) || addOnHours < 0) {
-        throw new Error("Hours must be a whole, non-negative number.");
+    const totalPlayHours = params.totalPlayHours != null ? Number(params.totalPlayHours) : 1;
+    if (isNaN(totalPlayHours) || totalPlayHours < 1) {
+        throw new Error("Total play time cannot be less than 1 hour.");
+    }
+    if (Math.round(totalPlayHours * 2) !== totalPlayHours * 2) {
+        throw new Error("Total play time must be in half-hour increments.");
     }
 
-    const hasGap = !!params.hasGap;
+    const totalSpanHours = params.totalSpanHours != null ? Number(params.totalSpanHours) : totalPlayHours;
+    if (isNaN(totalSpanHours) || totalSpanHours < totalPlayHours) {
+        throw new Error("The total event span can't be shorter than the total play time.");
+    }
+
     const extras = resolveExtras(params.extras || []);
     const extrasTotal = round2(extras.reduce(function (sum, e) { return sum + e.fee; }, 0));
 
@@ -118,21 +154,14 @@ function calculateQuote(params) {
     const base = { label: eventRules.baseLabel, price: eventRules.basePrice };
     const travel = calculateTravel(distanceMiles);
 
-    const customQuoteReasons = [];
-    if (hasGap) {
-        customQuoteReasons.push("This event has non-contiguous performance times (a gap between blocks). There's no fixed rate for idle/waiting time.");
-    }
     if (distanceMiles > PRICING_RULES.travel.customQuoteBeyondMiles) {
-        customQuoteReasons.push("This venue is more than " + PRICING_RULES.travel.customQuoteBeyondMiles + " miles away, which typically requires an overnight stay and meal per diem.");
-    }
-
-    if (customQuoteReasons.length > 0) {
         return {
             eventType: eventType,
             needsCustomQuote: true,
-            customQuoteReason: customQuoteReasons.join(" ") + " Julia will follow up directly to price this instead of an automatic quote.",
+            customQuoteReason: "This venue is more than " + PRICING_RULES.travel.customQuoteBeyondMiles + " miles away, which typically requires an overnight stay and meal per diem. Julia will follow up directly to price this instead of an automatic quote.",
             base: base,
-            additionalHours: null,
+            additionalPlayTime: null,
+            downtime: null,
             travel: travel,
             extras: extras,
             extrasTotal: extrasTotal,
@@ -141,20 +170,25 @@ function calculateQuote(params) {
         };
     }
 
-    const addHoursPrice = additionalHoursPrice(addOnHours);
-    const total = round2(base.price + addHoursPrice + travel.fee + extrasTotal);
+    const additionalPlayHours = round2(totalPlayHours - 1);
+    const additionalHalfHours = Math.round(additionalPlayHours * 2);
+    const additionalPlayPrice = additionalPlayTimePrice(additionalHalfHours);
+    const downtime = calculateDowntime(totalSpanHours, totalPlayHours);
+
+    const total = round2(base.price + additionalPlayPrice + downtime.fee + travel.fee + extrasTotal);
 
     return {
         eventType: eventType,
         needsCustomQuote: false,
         customQuoteReason: null,
         base: base,
-        additionalHours: {
-            count: addOnHours,
-            price: addHoursPrice,
-            rateDescription: "+$" + PRICING_RULES.additionalHourRates.firstHour + " first additional hour, +$" +
-                PRICING_RULES.additionalHourRates.eachHourAfter + " each hour after that"
+        additionalPlayTime: {
+            hours: additionalPlayHours,
+            price: additionalPlayPrice,
+            rateDescription: "+$" + PRICING_RULES.additionalHalfHourRates.firstHalfHour + " first additional half hour, +$" +
+                PRICING_RULES.additionalHalfHourRates.eachHalfHourAfter + " each half hour after that"
         },
+        downtime: downtime,
         travel: travel,
         extras: extras,
         extrasTotal: extrasTotal,

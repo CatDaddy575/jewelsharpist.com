@@ -601,11 +601,37 @@
                         <input type="date" id="eventDate" name="eventDate" required min="">
                     </div>
                     <div class="form-group">
-                        <label for="eventStartTime">Start Time *</label>
+                        <label for="eventStartTime">Arrival Time *</label>
                         <input type="time" id="eventStartTime" name="eventStartTime" required>
                     </div>
                 </div>
-                <p class="form-hint">We check this against Julia's calendar automatically. Final confirmation still comes from Julia when she follows up.</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventEndTime">Departure Time *</label>
+                        <input type="time" id="eventEndTime" name="eventEndTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="totalPlayHours">Total Play Time *</label>
+                        <select id="totalPlayHours" name="totalPlayHoursInput" required>
+                            <option value="1">1 hour (included in the base price)</option>
+                            <option value="1.5">1.5 hours</option>
+                            <option value="2">2 hours</option>
+                            <option value="2.5">2.5 hours</option>
+                            <option value="3">3 hours</option>
+                            <option value="3.5">3.5 hours</option>
+                            <option value="4">4 hours</option>
+                            <option value="4.5">4.5 hours</option>
+                            <option value="5">5 hours</option>
+                            <option value="5.5">5.5 hours</option>
+                            <option value="6">6 hours</option>
+                            <option value="6.5">6.5 hours</option>
+                            <option value="7">7 hours</option>
+                            <option value="7.5">7.5 hours</option>
+                            <option value="8">8 hours</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="form-hint">We check arrival/departure against Julia's calendar automatically. If there's a gap between arrival and when she's actually playing (e.g. a morning ceremony and an evening reception), a downtime fee may apply — shown in your estimate below. Final confirmation still comes from Julia when she follows up.</p>
 
                 <!-- Venue Address -->
                 <div class="form-group">
@@ -681,20 +707,6 @@
                 </div>
                 <p class="form-hint">We use the zip code to estimate travel distance from Julia's Savannah base. The first 25 miles are included at no charge.</p>
 
-                <!-- Hours: wedding -->
-                <div class="form-group" id="hoursWeddingGroup" style="display: none;">
-                    <label for="addOnHoursWedding">Additional hours beyond the ceremony (e.g. cocktail hour)</label>
-                    <input type="number" id="addOnHoursWedding" name="addOnHoursWeddingInput" min="0" max="10" step="1" value="0">
-                    <p class="form-hint">Leave at 0 if you only need the ceremony performance.</p>
-                </div>
-
-                <!-- Hours: party/funeral -->
-                <div class="form-group" id="hoursHourlyGroup" style="display: none;">
-                    <label for="totalHours">Total hours of performance</label>
-                    <input type="number" id="totalHours" name="totalHoursInput" min="1" max="10" step="1" value="1">
-                    <p class="form-hint">The first hour is included in the base rate shown below.</p>
-                </div>
-
                 <button type="button" class="calc-button" id="calcButton">Get My Estimate</button>
                 <div class="calc-error" id="calcError"></div>
 
@@ -766,8 +778,6 @@
     <script src="availability.js"></script>
     <script>
         const eventTypeInputs = document.querySelectorAll('input[name="eventType"]');
-        const hoursWeddingGroup = document.getElementById('hoursWeddingGroup');
-        const hoursHourlyGroup = document.getElementById('hoursHourlyGroup');
         const calcButton = document.getElementById('calcButton');
         const calcError = document.getElementById('calcError');
         const quoteResult = document.getElementById('quoteResult');
@@ -782,6 +792,8 @@
         const failureModalClose = document.getElementById('failureModalClose');
         const eventDateInput = document.getElementById('eventDate');
         const eventStartTimeInput = document.getElementById('eventStartTime');
+        const eventEndTimeInput = document.getElementById('eventEndTime');
+        const totalPlayHoursSelect = document.getElementById('totalPlayHours');
         const streetAddressInput = document.getElementById('streetAddress');
         const cityInput = document.getElementById('city');
         const stateSelect = document.getElementById('state');
@@ -809,15 +821,8 @@
             return checked ? checked.value : null;
         }
 
-        function updateHoursFields() {
-            const eventType = currentEventType();
-            hoursWeddingGroup.style.display = eventType === 'wedding' ? 'block' : 'none';
-            hoursHourlyGroup.style.display = (eventType === 'party' || eventType === 'funeral') ? 'block' : 'none';
-        }
-
         eventTypeInputs.forEach(function (input) {
             input.addEventListener('change', function () {
-                updateHoursFields();
                 quoteResult.classList.remove('show');
                 submitButton.disabled = true;
             });
@@ -841,18 +846,15 @@
                 throw new Error('Please choose an event type.');
             }
 
-            let addOnHours = 0;
-            if (eventType === 'wedding') {
-                addOnHours = parseInt(document.getElementById('addOnHoursWedding').value || '0', 10);
-            } else {
-                const totalHours = parseInt(document.getElementById('totalHours').value || '1', 10);
-                if (totalHours < 1) {
-                    throw new Error('Total hours must be at least 1.');
-                }
-                addOnHours = totalHours - 1;
-            }
+            const totalPlayHours = parseFloat(totalPlayHoursSelect.value);
 
-            return { eventType: eventType, addOnHours: addOnHours, hasGap: false, extras: [] };
+            return { eventType: eventType, totalPlayHours: totalPlayHours, extras: [] };
+        }
+
+        function computeSpanHours(dateStr, startTimeStr, endTimeStr) {
+            const start = new Date(dateStr + 'T' + startTimeStr);
+            const end = new Date(dateStr + 'T' + endTimeStr);
+            return (end - start) / (1000 * 60 * 60);
         }
 
         function renderQuote(quote) {
@@ -869,8 +871,11 @@
             } else {
                 html += '<div class="quote-breakdown">';
                 html += '<div class="quote-line"><span class="quote-line-label">' + quote.base.label + '</span><span class="quote-line-amount">' + money(quote.base.price) + '</span></div>';
-                if (quote.additionalHours.count > 0) {
-                    html += '<div class="quote-line"><span class="quote-line-label">' + quote.additionalHours.count + ' additional hour(s) (' + quote.additionalHours.rateDescription + ')</span><span class="quote-line-amount">' + money(quote.additionalHours.price) + '</span></div>';
+                if (quote.additionalPlayTime.hours > 0) {
+                    html += '<div class="quote-line"><span class="quote-line-label">' + quote.additionalPlayTime.hours + ' additional hour(s) of playing (' + quote.additionalPlayTime.rateDescription + ')</span><span class="quote-line-amount">' + money(quote.additionalPlayTime.price) + '</span></div>';
+                }
+                if (quote.downtime.applies) {
+                    html += '<div class="quote-line"><span class="quote-line-label">Downtime (' + quote.downtime.gapHours + ' hr gap between arrival and playing, over double the play time)</span><span class="quote-line-amount">' + money(quote.downtime.fee) + '</span></div>';
                 }
                 if (quote.travel.fee > 0) {
                     html += '<div class="quote-line"><span class="quote-line-label">Travel (' + quote.travel.billableMiles + ' billable miles beyond the free ' + quote.travel.freeRadiusMiles + ' mile radius)</span><span class="quote-line-amount">' + money(quote.travel.fee) + '</span></div>';
@@ -905,13 +910,17 @@
         function buildSummaryText(quote, address) {
             const lines = [];
             lines.push('Event type: ' + quote.eventType);
-            lines.push('Event date/time: ' + eventDateInput.value + ' at ' + eventStartTimeInput.value);
+            lines.push('Arrival: ' + eventDateInput.value + ' at ' + eventStartTimeInput.value);
+            lines.push('Departure: ' + eventDateInput.value + ' at ' + eventEndTimeInput.value);
             lines.push('Venue address: ' + address);
             lines.push('Base: ' + quote.base.label + ' - ' + money(quote.base.price));
             if (quote.needsCustomQuote) {
                 lines.push('NEEDS CUSTOM QUOTE: ' + quote.customQuoteReason);
             } else {
-                lines.push('Additional hours: ' + quote.additionalHours.count + ' - ' + money(quote.additionalHours.price));
+                lines.push('Additional play time: ' + quote.additionalPlayTime.hours + ' hr(s) - ' + money(quote.additionalPlayTime.price));
+                if (quote.downtime.applies) {
+                    lines.push('Downtime: ' + quote.downtime.gapHours + ' hr(s) - ' + money(quote.downtime.fee));
+                }
             }
             lines.push('Travel: ' + quote.travel.distanceMiles + ' driving miles, ' + quote.travel.billableMiles + ' billable miles, fee ' + money(quote.travel.fee));
             lines.push('Total: ' + (quote.needsCustomQuote ? 'Needs custom quote' : money(quote.total)));
@@ -930,8 +939,20 @@
                 return;
             }
 
-            if (!eventDateInput.value || !eventStartTimeInput.value) {
-                calcError.textContent = 'Please choose an event date and start time.';
+            if (!eventDateInput.value || !eventStartTimeInput.value || !eventEndTimeInput.value) {
+                calcError.textContent = 'Please choose an event date, arrival time, and departure time.';
+                calcError.classList.add('show');
+                return;
+            }
+
+            const spanHours = computeSpanHours(eventDateInput.value, eventStartTimeInput.value, eventEndTimeInput.value);
+            if (spanHours <= 0) {
+                calcError.textContent = 'Departure time must be after the arrival time.';
+                calcError.classList.add('show');
+                return;
+            }
+            if (params.totalPlayHours > spanHours) {
+                calcError.textContent = 'You\'ve requested more playing time (' + params.totalPlayHours + ' hrs) than the time between arrival and departure (' + spanHours.toFixed(1) + ' hrs) allows. Please adjust the times or the play time.';
                 calcError.classList.add('show');
                 return;
             }
@@ -953,8 +974,7 @@
             calcButton.textContent = 'Calculating...';
 
             try {
-                const durationHours = 1 + params.addOnHours;
-                const availability = await checkAvailability(eventDateInput.value, eventStartTimeInput.value, durationHours);
+                const availability = await checkAvailability(eventDateInput.value, eventStartTimeInput.value, eventEndTimeInput.value);
                 if (!availability.available) {
                     calcError.textContent = formatConflictMessage(availability.conflict);
                     calcError.classList.add('show');
@@ -967,6 +987,7 @@
                 const distanceMiles = distanceResult.drivingMiles;
 
                 params.distanceMiles = distanceMiles;
+                params.totalSpanHours = spanHours;
                 const quote = calculateQuote(params);
                 renderQuote(quote);
                 quoteResult.classList.add('show');
@@ -1016,7 +1037,6 @@
         });
 
         window.addEventListener('load', function () {
-            updateHoursFields();
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('success')) {
                 successMessage.classList.add('show');
