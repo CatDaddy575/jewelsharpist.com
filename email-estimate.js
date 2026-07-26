@@ -17,12 +17,12 @@
 
 const SEND_ESTIMATE_EMAIL_API_URL = "https://script.google.com/macros/s/AKfycbxVNEV5sCMatb9cWSjJxEcW10qJgj-GoSjRkktE4R0MGYFOzjT6ErKytzo-AmMmIICS/exec";
 
-async function sendEstimateEmail(toEmail, subject, body) {
+async function sendEstimateEmail(toEmail, subject, body, htmlBody) {
     let response;
     try {
         response = await fetch(SEND_ESTIMATE_EMAIL_API_URL, {
             method: "POST",
-            body: JSON.stringify({ to: toEmail, subject: subject, body: body })
+            body: JSON.stringify({ to: toEmail, subject: subject, body: body, htmlBody: htmlBody })
         });
     } catch (e) {
         throw new Error("Couldn't reach the email service.");

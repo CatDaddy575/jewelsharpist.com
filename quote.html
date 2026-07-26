@@ -713,11 +713,17 @@
                 </div>
                 <p class="form-hint">We use the zip code to estimate travel distance from Julia's Savannah base. The first 25 miles are included at no charge.</p>
 
-                <div class="form-group">
-                    <label for="email">Email Address *</label>
-                    <input type="email" id="email" name="email" required placeholder="you@example.com">
-                    <p class="form-hint">We'll email your estimate to this address - it doesn't display on this page.</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="you@example.com">
+                    </div>
                 </div>
+                <p class="form-hint">We'll email your estimate to this address - it doesn't display on this page.</p>
 
                 <button type="button" class="calc-button" id="calcButton">Get My Estimate</button>
                 <div class="calc-error" id="calcError"></div>
@@ -727,15 +733,9 @@
                     <h2 id="quoteResultHeading">Your Estimate</h2>
                     <div id="quoteBreakdown"></div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Full Name *</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" required>
-                        </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
                     </div>
                     <div class="form-group">
                         <label for="notes">Anything else Julia should know? (optional)</label>
@@ -810,6 +810,7 @@
         const stateSelect = document.getElementById('state');
         const zipInput = document.getElementById('zip');
         const emailInput = document.getElementById('email');
+        const nameInput = document.getElementById('name');
 
         if (eventDateInput) {
             const today = new Date().toISOString().split('T')[0];
@@ -946,6 +947,12 @@
             return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
+        function getFirstName() {
+            return nameInput.value.trim().split(/\s+/)[0];
+        }
+
+        const EVENT_TYPE_OCCASION = { wedding: 'wedding', party: 'event', funeral: 'funeral' };
+
         function fullAddress() {
             const street = streetAddressInput.value.trim();
             const city = cityInput.value.trim();
@@ -984,7 +991,9 @@
 
         function buildVisitorEmailText(quote, phaseLabels) {
             const lines = [];
-            lines.push('Hi! Here\'s your instant estimate from Jewels Harpist.');
+            lines.push('Dear ' + getFirstName() + ',');
+            lines.push('');
+            lines.push('Please find your estimate for harp performance at your upcoming ' + (EVENT_TYPE_OCCASION[quote.eventType] || quote.eventType) + ' outlined below.');
             lines.push('');
             lines.push('Event type: ' + quote.eventType);
             lines.push('Date: ' + eventDateInput.value + ', ' + eventStartTimeInput.value + ' to ' + eventEndTimeInput.value);
@@ -1020,9 +1029,79 @@
                 lines.push(note);
             });
             lines.push('');
-            lines.push('This is a free, non-binding estimate - final pricing will be confirmed by Julia when she follows up.');
+            lines.push('This is a free, non-binding estimate - final pricing will be confirmed by Julia when she follows up, subject to our terms and conditions.');
             lines.push('Questions? Call (706) 247-2919 or email jewelsharpist@gmail.com.');
             return lines.join('\n');
+        }
+
+        const EVENT_TYPE_LABELS = { wedding: 'Wedding', party: 'Party / Corporate Event', funeral: 'Funeral / Memorial' };
+
+        function buildVisitorEmailHtml(quote, phaseLabels) {
+            const eventTypeLabel = EVENT_TYPE_LABELS[quote.eventType] || quote.eventType;
+            const dateLine = eventDateInput.value + ' &nbsp;&middot;&nbsp; ' + eventStartTimeInput.options[eventStartTimeInput.selectedIndex].text + ' to ' + eventEndTimeInput.options[eventEndTimeInput.selectedIndex].text;
+
+            let rowsHtml = '';
+            let noticeHtml = '';
+
+            if (quote.needsCustomQuote) {
+                noticeHtml = '<div style="background:#fff8e6;border-left:3px solid #d4af37;padding:18px 22px;margin:24px 0;font-size:15px;line-height:1.6;color:#555;">' +
+                    quote.customQuoteReason + '<br><br>Julia will follow up directly to work out pricing.</div>';
+            } else {
+                const totalPlayHoursDisplay = 1 + quote.additionalPlayTime.hours;
+                const packagePrice = quote.base.price + quote.additionalPlayTime.price;
+                function row(label, amount, bold) {
+                    return '<tr>' +
+                        '<td style="padding:12px 0;border-bottom:1px solid #e8e8e8;font-size:15px;color:#555;">' + label + '</td>' +
+                        '<td style="padding:12px 0;border-bottom:1px solid #e8e8e8;font-size:15px;text-align:right;white-space:nowrap;color:' + (bold ? '#2a2a2a;font-weight:600' : '#2a2a2a') + ';">' + money(amount) + '</td>' +
+                        '</tr>';
+                }
+                rowsHtml += row('Performance Package (' + totalPlayHoursDisplay + (totalPlayHoursDisplay === 1 ? ' hr' : ' hrs') + ' of playing)', packagePrice, true);
+                if (phaseLabels && phaseLabels.length > 0) {
+                    rowsHtml += '<tr><td colspan="2" style="padding:0 0 12px;border-bottom:1px solid #e8e8e8;font-size:13px;color:#888;">Includes: ' + phaseLabels.join(', ') + '</td></tr>';
+                }
+                if (quote.downtime.applies) {
+                    rowsHtml += row('Downtime (' + quote.downtime.gapHours + ' hr gap)', quote.downtime.fee, false);
+                }
+                if (quote.travel.fee > 0) {
+                    rowsHtml += row('Travel (' + quote.travel.billableMiles + ' billable miles)', quote.travel.fee, false);
+                } else {
+                    rowsHtml += row('Travel (within the free ' + quote.travel.freeRadiusMiles + ' mile radius)', 0, false);
+                }
+                quote.extras.forEach(function (extra) {
+                    rowsHtml += row(extra.label, extra.fee, false);
+                });
+                rowsHtml += '<tr><td style="padding:20px 0 0;font-size:18px;font-weight:700;color:#2a2a2a;border-top:2px solid #2a2a2a;">Estimated Total</td>' +
+                    '<td style="padding:20px 0 0;font-size:26px;font-weight:700;text-align:right;white-space:nowrap;color:#d4af37;border-top:2px solid #2a2a2a;">' + money(quote.total) + '</td></tr>';
+            }
+
+            let notesHtml = '';
+            quote.notes.forEach(function (note) {
+                notesHtml += '<p style="font-size:13px;color:#888;line-height:1.6;margin:0 0 8px;">' + note + '</p>';
+            });
+
+            return '' +
+                '<div style="max-width:600px;margin:0 auto;background:#ffffff;font-family:Arial,Helvetica,sans-serif;">' +
+                '<div style="background:#00331d;padding:36px 24px;text-align:center;">' +
+                '<div style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:1px;">JEWELS HARPIST</div>' +
+                '<div style="color:#d4af37;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-top:6px;">Your Instant Estimate</div>' +
+                '</div>' +
+                '<div style="padding:32px 28px;">' +
+                '<p style="font-size:16px;line-height:1.6;color:#2a2a2a;margin:0 0 8px;">Dear ' + getFirstName() + ',</p>' +
+                '<p style="font-size:16px;line-height:1.6;color:#2a2a2a;margin:0 0 20px;">Please find your estimate for harp performance at your upcoming ' + (EVENT_TYPE_OCCASION[quote.eventType] || quote.eventType) + ' outlined below.</p>' +
+                '<div style="background:#f8f8f8;border-left:3px solid #d4af37;padding:18px 22px;margin-bottom:8px;">' +
+                '<div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">' + eventTypeLabel + '</div>' +
+                '<div style="font-size:15px;color:#2a2a2a;">' + dateLine + '</div>' +
+                '</div>' +
+                noticeHtml +
+                (rowsHtml ? '<table style="width:100%;border-collapse:collapse;margin:24px 0;">' + rowsHtml + '</table>' : '') +
+                notesHtml +
+                '<p style="font-size:13px;color:#999;line-height:1.6;margin-top:20px;">This is a free, non-binding estimate &mdash; final pricing will be confirmed by Julia when she follows up, subject to our terms and conditions.</p>' +
+                '</div>' +
+                '<div style="background:#00331d;padding:22px 24px;text-align:center;">' +
+                '<div style="color:#ffffff;font-size:13px;">(706) 247-2919 &nbsp;|&nbsp; jewelsharpist@gmail.com</div>' +
+                '<div style="color:rgba(255,255,255,0.6);font-size:11px;margin-top:6px;">Savannah, GA</div>' +
+                '</div>' +
+                '</div>';
         }
 
         function renderConfirmation(quote, email) {
@@ -1128,6 +1207,11 @@
                 calcError.classList.add('show');
                 return;
             }
+            if (!nameInput.value.trim()) {
+                calcError.textContent = 'Please enter your name.';
+                calcError.classList.add('show');
+                return;
+            }
 
             const originalButtonText = calcButton.textContent;
             calcButton.disabled = true;
@@ -1152,7 +1236,8 @@
                 const phaseLabels = getSelectedPhaseLabels();
 
                 const emailBody = buildVisitorEmailText(quote, phaseLabels);
-                await sendEstimateEmail(email, 'Your Harp Estimate from Jewels Harpist', emailBody);
+                const emailHtml = buildVisitorEmailHtml(quote, phaseLabels);
+                await sendEstimateEmail(email, 'Your Harp Estimate from Jewels Harpist', emailBody, emailHtml);
 
                 renderConfirmation(quote, email);
                 quoteResult.classList.add('show');

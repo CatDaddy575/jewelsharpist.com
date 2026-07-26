@@ -25,6 +25,7 @@ function doPost(e) {
   var to = data.to;
   var subject = data.subject;
   var body = data.body;
+  var htmlBody = data.htmlBody;
 
   if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
     return jsonResponse({ error: "A valid recipient email is required" });
@@ -34,10 +35,14 @@ function doPost(e) {
   }
 
   try {
-    GmailApp.sendEmail(to, subject, body, {
+    var options = {
       name: "Jewels Harpist",
       replyTo: "jewelsharpist@gmail.com"
-    });
+    };
+    if (htmlBody) {
+      options.htmlBody = htmlBody;
+    }
+    GmailApp.sendEmail(to, subject, body, options);
   } catch (err) {
     return jsonResponse({ error: "Failed to send email: " + err.message });
   }

@@ -301,9 +301,35 @@
   the real jewelsharpist.com origin to confirm no CORS issue), then a
   full simulated form submission confirmed the whole pipeline end-to-end.
 
+## DONE (cont'd, 2026-07-26) — Branded HTML Estimate Email
+- The estimate email is now styled HTML (dark green header/footer, gold
+  accent, clean receipt-style breakdown table) instead of plain text,
+  matching the site's branding - `buildVisitorEmailHtml()` in `quote.html`,
+  sent alongside the existing plain-text version as a fallback.
+  `send-estimate-email.gs` redeployed (same URL, new version) to accept
+  an optional `htmlBody` and pass it to GmailApp.
+- Personalized the greeting: "Dear {First Name}, / Please find your
+  estimate for harp performance at your upcoming wedding/event/funeral
+  outlined below." Required moving the Full Name field from after the
+  calc button to before it (paired with Email) since the email sends
+  immediately on click and Name wasn't collected yet at that point in
+  the old flow.
+- Disclaimer now reads "...final pricing will be confirmed by Julia when
+  she follows up, subject to our terms and conditions."
+- Verified twice via the Gmail MCP connector (confirmed authenticated as
+  jewelsharpist@gmail.com) - pulled the actual received emails and
+  confirmed exact HTML rendering and correct "Dear Sarah," extraction
+  from a "Sarah Mitchell" test name.
+
 **NEXT for the quoting tool:** get real prices for the `known_extras`
 catalog if/when Julia wants specific add-ons priced; revisit song pricing
 once the user confirms with Julia whether it's actually changing; build
 a real 200-mile ZIP-radius list to replace the GA/FL/SC state-dropdown
-approximation; otherwise this feature is functionally complete and live.
+approximation; build the "Book Now → accept + deposit" email flow (see
+quoting-tool-architecture memory - terms language, percentage deposit +
+cash-discount incentive confirmed, no payment processor yet so v1 skips
+live payment); build periodic functionality testing (a recurring check
+that pricing/distance/calendar/email/Formspree all still work, since
+right now nothing is monitored and breakage would only be caught by
+accident) - otherwise this feature is functionally complete and live.
 
