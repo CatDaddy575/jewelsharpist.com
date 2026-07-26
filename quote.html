@@ -713,7 +713,7 @@
                 </div>
                 <p class="form-hint">We use the zip code to estimate travel distance from Julia's Savannah base. The first 25 miles are included at no charge.</p>
 
-                <div class="form-row">
+                <div class="form-row-3">
                     <div class="form-group">
                         <label for="name">Full Name *</label>
                         <input type="text" id="name" name="name" required>
@@ -721,6 +721,10 @@
                     <div class="form-group">
                         <label for="email">Email Address *</label>
                         <input type="email" id="email" name="email" required placeholder="you@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
                     </div>
                 </div>
                 <p class="form-hint">We'll email your estimate to this address - it doesn't display on this page.</p>
@@ -733,10 +737,6 @@
                     <h2 id="quoteResultHeading">Your Estimate</h2>
                     <div id="quoteBreakdown"></div>
 
-                    <div class="form-group">
-                        <label for="phone">Phone Number *</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
                     <div class="form-group">
                         <label for="notes">Anything else Julia should know? (optional)</label>
                         <textarea id="notes" name="notes" placeholder="E.g. a break between performance times, a specific song request, or anything else about your event."></textarea>
@@ -811,6 +811,7 @@
         const zipInput = document.getElementById('zip');
         const emailInput = document.getElementById('email');
         const nameInput = document.getElementById('name');
+        const phoneInput = document.getElementById('phone');
 
         if (eventDateInput) {
             const today = new Date().toISOString().split('T')[0];
@@ -1133,6 +1134,9 @@
 
         function buildSummaryText(quote, address, phaseLabels) {
             const lines = [];
+            lines.push('Name: ' + nameInput.value.trim());
+            lines.push('Email: ' + emailInput.value.trim());
+            lines.push('Phone: ' + phoneInput.value.trim());
             lines.push('Event type: ' + quote.eventType);
             lines.push('Arrival: ' + eventDateInput.value + ' at ' + eventStartTimeInput.value);
             lines.push('Departure: ' + eventDateInput.value + ' at ' + eventEndTimeInput.value);
@@ -1212,6 +1216,11 @@
                 calcError.classList.add('show');
                 return;
             }
+            if (!phoneInput.value.trim()) {
+                calcError.textContent = 'Please enter your phone number.';
+                calcError.classList.add('show');
+                return;
+            }
 
             const originalButtonText = calcButton.textContent;
             calcButton.disabled = true;
@@ -1243,9 +1252,18 @@
                 quoteResult.classList.add('show');
                 submitButton.disabled = false;
 
-                quoteSummaryField.value = buildSummaryText(quote, fullAddress(), phaseLabels);
-                formSubject.value = 'New Estimate Request - ' + quote.eventType + ' - ' +
+                const summaryText = buildSummaryText(quote, fullAddress(), phaseLabels);
+                quoteSummaryField.value = summaryText;
+                const subjectLine = 'New Estimate Request - ' + quote.eventType + ' - ' +
                     (quote.needsCustomQuote ? 'Needs custom quote' : money(quote.total));
+                formSubject.value = subjectLine;
+
+                try {
+                    await sendEstimateEmail('jewelsharpist@gmail.com', subjectLine, summaryText);
+                } catch (notifyErr) {
+                    // Non-fatal: the visitor already has their estimate. Don't block their
+                    // flow or show a failure modal over an internal notification hiccup.
+                }
 
                 quoteResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } catch (err) {
