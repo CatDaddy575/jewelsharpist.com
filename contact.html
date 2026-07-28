@@ -109,6 +109,67 @@
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
         }
 
+        /* Mobile nav */
+        .hamburger-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 44px;
+            height: 44px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .hamburger-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--primary);
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .hamburger-btn.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger-btn.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-btn.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .mobile-nav-menu {
+            display: none;
+            flex-direction: column;
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mobile-nav-menu a {
+            padding: 1rem 2rem;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mobile-nav-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-nav-menu a.active {
+            color: var(--accent);
+        }
+
         /* Page Header */
         .page-header {
             background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
@@ -338,6 +399,27 @@
                 font-size: 2rem;
             }
 
+            nav {
+                padding: 1rem 1.25rem;
+            }
+
+            .logo {
+                font-size: 1.05rem;
+            }
+
+            .cta-button {
+                padding: 0.7rem 1rem;
+                font-size: 0.75rem;
+            }
+
+            .hamburger-btn {
+                display: flex;
+            }
+
+            .mobile-nav-menu.open {
+                display: flex;
+            }
+
             .contact-container {
                 grid-template-columns: 1fr;
             }
@@ -363,7 +445,19 @@
                 </ul>
             </div>
             <button class="cta-button">Book Now</button>
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNavMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
+        <div class="mobile-nav-menu" id="mobileNavMenu">
+            <a href="index.html">Home</a>
+            <a href="services.html">Services</a>
+            <a href="quote.html">Get an Estimate</a>
+            <a href="testimonials.html">Testimonials</a>
+            <a href="contact.html" class="active">Contact</a>
+        </div>
     </header>
 
     <!-- Page Header -->
@@ -475,6 +569,14 @@
     </footer>
 
     <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileNavMenu = document.getElementById('mobileNavMenu');
+        hamburgerBtn.addEventListener('click', function () {
+            const isOpen = mobileNavMenu.classList.toggle('open');
+            hamburgerBtn.classList.toggle('open', isOpen);
+            hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
         const contactForm = document.getElementById('contactForm');
         const successMessage = document.getElementById('successMessage');
         const submitButton = document.querySelector('.submit-button');

@@ -321,6 +321,39 @@
   confirmed exact HTML rendering and correct "Dear Sarah," extraction
   from a "Sarah Mitchell" test name.
 
+## DONE (cont'd, 2026-07-26) — Phone Required Pre-Submit + Auto-Notify Julia
+- Phone Number moved next to Full Name/Email (required before "Get My
+  Estimate"), out of the post-calculation block. "Anything else Julia
+  should know?" stays optional, stays where it was.
+- Every successful estimate now automatically emails a full summary
+  (name, email, phone, event details, pricing breakdown) to
+  jewelsharpist@gmail.com - not just when the visitor completes the
+  final "Request This Estimate" step. Julia now sees every real lead,
+  even ones who don't finish the full request.
+- Verified live: phone-validation blocks correctly when empty; full
+  flow with phone filled in sends both the visitor's branded estimate
+  and Julia's intake notification within the same second (confirmed via
+  the Gmail connector, not just page state).
+
+## DONE (cont'd, 2026-07-27) — Mobile Hamburger Menu, All 5 Pages
+- Mobile nav previously just hid all nav links below 768px width with
+  nothing replacing them - only "Book Now" stayed reachable. Added a
+  real hamburger menu (3-bar icon that morphs to an X) to all 5 pages
+  (index, services, quote, testimonials, contact) - tapping it reveals
+  a full-width vertical menu with Home/Services/Get an Estimate/
+  Testimonials/Contact, each page highlighting its own current link.
+- Fixed a real pre-existing overlap bug found while testing: the logo
+  text and Book Now button were cramped/clipping into each other at
+  narrow mobile widths (~375px) - added mobile-specific sizing for the
+  nav padding, logo font-size, and Book Now button padding.
+- Vanilla JS only, no dependencies - same toggle logic duplicated
+  identically across all 5 pages (site has no shared JS/CSS file, so
+  this matches the site's existing per-page-independent pattern).
+- Verified on all 5 pages: correct layout at mobile width, toggle
+  opens/closes correctly (checked via real DOM state, not just visual
+  screenshots, after a browser-tool quirk made some screenshots
+  unreliable mid-testing), no console errors, desktop nav unaffected.
+
 **NEXT for the quoting tool:** get real prices for the `known_extras`
 catalog if/when Julia wants specific add-ons priced; revisit song pricing
 once the user confirms with Julia whether it's actually changing; build
