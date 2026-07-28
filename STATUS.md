@@ -354,6 +354,30 @@
   screenshots, after a browser-tool quirk made some screenshots
   unreliable mid-testing), no console errors, desktop nav unaffected.
 
+## DONE (cont'd, 2026-07-27) — Nav Wording, Book Now Removed from Estimate Page, Hamburger Repositioned
+- "Get an Estimate" renamed site-wide: desktop nav (all 5 pages) + the
+  quote.html page title/H1 now say "Request an Instant Estimate"; the
+  mobile hamburger menu (shorter, space-constrained) says "Request an
+  Estimate" instead.
+- Removed the "Book Now" button from quote.html's nav specifically
+  (desktop and mobile both use the same button element) - every Book
+  Now button site-wide already leads to this exact page, so having one
+  on the page it leads to was redundant. Left untouched on the other 4
+  pages, where it still serves its purpose.
+- Moved the hamburger icon from the top-right (after Book Now) to the
+  top-left, grouped inside `.nav-left` before the logo, on all 5 pages -
+  added a tighter mobile-only gap (`0.85rem`) between the icon and logo
+  so they read as one grouped unit rather than the old wider desktop
+  gap.
+- Verified all changes via direct DOM/position checks (element order,
+  text content, computed bounding-box coordinates) rather than relying
+  solely on screenshots, after the local browser-preview tool's
+  screenshot capture became unreliable partway through testing - this
+  is a testing-tool quirk observed a few times this project, not a site
+  bug. Confirmed hamburger sits leftmost, logo directly after it, and
+  (where present) Book Now on the right, on all 5 pages with no
+  console errors.
+
 **NEXT for the quoting tool:** get real prices for the `known_extras`
 catalog if/when Julia wants specific add-ons priced; revisit song pricing
 once the user confirms with Julia whether it's actually changing; build

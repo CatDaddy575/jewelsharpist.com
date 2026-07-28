@@ -609,6 +609,10 @@
                 padding: 1rem 1.25rem;
             }
 
+            .nav-left {
+                gap: 0.85rem;
+            }
+
             .logo {
                 font-size: 1.05rem;
             }
@@ -666,25 +670,25 @@
     <header>
         <nav>
             <div class="nav-left">
+                <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNavMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <a href="index.html" class="logo">Jewels Harpist</a>
                 <ul>
                     <li><a href="services.html">Services</a></li>
-                    <li><a href="quote.html">Get an Estimate</a></li>
+                    <li><a href="quote.html">Request an Instant Estimate</a></li>
                     <li><a href="testimonials.html">Testimonials</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
             <button class="cta-button" onclick="window.location.href='quote.html'">Book Now</button>
-            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNavMenu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
         </nav>
         <div class="mobile-nav-menu" id="mobileNavMenu">
             <a href="index.html" class="active">Home</a>
             <a href="services.html">Services</a>
-            <a href="quote.html">Get an Estimate</a>
+            <a href="quote.html">Request an Estimate</a>
             <a href="testimonials.html">Testimonials</a>
             <a href="contact.html">Contact</a>
         </div>
