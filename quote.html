@@ -798,9 +798,57 @@
                         <label for="state">State *</label>
                         <select id="state" name="state" required>
                             <option value="">Select</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
                             <option value="FL">Florida</option>
                             <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
                             <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
+                            <option value="DC">Washington DC</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -809,6 +857,9 @@
                     </div>
                 </div>
                 <p class="form-hint">We use the zip code to estimate travel distance from Julia's Savannah base. The first 25 miles are included at no charge.</p>
+                <div class="custom-quote-notice" id="zipServiceAreaNotice" style="display: none;">
+                    That ZIP code looks like it's outside Julia's usual 200-mile service area. Please <a href="contact.html">contact her directly</a> for a custom quote.
+                </div>
 
                 <div class="form-row-3">
                     <div class="form-group">
@@ -878,6 +929,7 @@
         </div>
     </div>
 
+    <script src="valid-zips.js?v=20260727"></script>
     <script src="pricing.js?v=20260726"></script>
     <script src="distance.js?v=20260726"></script>
     <script src="availability.js?v=20260726"></script>
@@ -914,9 +966,26 @@
         const cityInput = document.getElementById('city');
         const stateSelect = document.getElementById('state');
         const zipInput = document.getElementById('zip');
+        const zipServiceAreaNotice = document.getElementById('zipServiceAreaNotice');
         const emailInput = document.getElementById('email');
         const nameInput = document.getElementById('name');
         const phoneInput = document.getElementById('phone');
+
+        function isZipInServiceArea(zip) {
+            // If the list failed to load for some reason, don't block visitors -
+            // the live driving-distance check is still the real, authoritative gate.
+            if (typeof VALID_SERVICE_AREA_ZIPS === 'undefined') return true;
+            return VALID_SERVICE_AREA_ZIPS.has(zip);
+        }
+
+        zipInput.addEventListener('input', function () {
+            const zip = zipInput.value.trim();
+            if (/^\d{5}$/.test(zip) && !isZipInServiceArea(zip)) {
+                zipServiceAreaNotice.style.display = 'block';
+            } else {
+                zipServiceAreaNotice.style.display = 'none';
+            }
+        });
 
         if (eventDateInput) {
             const today = new Date().toISOString().split('T')[0];
@@ -1307,6 +1376,11 @@
             const zip = zipInput.value.trim();
             if (!/^\d{5}$/.test(zip)) {
                 calcError.textContent = 'ZIP code must be exactly 5 digits.';
+                calcError.classList.add('show');
+                return;
+            }
+            if (!isZipInServiceArea(zip)) {
+                calcError.textContent = 'That ZIP code is outside Julia\'s usual 200-mile service area. Please contact her directly for a custom quote.';
                 calcError.classList.add('show');
                 return;
             }

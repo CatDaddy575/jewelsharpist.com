@@ -378,15 +378,60 @@
   (where present) Book Now on the right, on all 5 pages with no
   console errors.
 
+## DONE (cont'd, 2026-07-27) — Real 200-Mile ZIP-Radius Service Area Check
+- Built autonomously per explicit user authorization ("build and
+  implement it without any input from me... according to our global
+  rules") - no check-ins mid-build, tested thoroughly before shipping.
+- New bubba `zip_radius_bubba` (`Projects\bubbas\zip_radius_bubba\`):
+  given the Census Bureau's ZCTA gazetteer file (a real bulk dataset,
+  downloaded once via curl - not 33,000 live API calls), computes every
+  US zip within a 230-mile straight-line safety margin of Julia's base.
+  Result: 1405 zips, spanning GA/SC/FL/NC and a sliver of AL. Copied to
+  thor-test-agent and kamla-auditor per the standing rule (only this
+  bubba's files staged in each - unrelated pre-existing uncommitted
+  work in those repos was left untouched).
+- Ships as `valid-zips.js` (a JS Set, 14KB) - the zip field now gives
+  **instant** feedback the moment a visitor finishes typing an
+  out-of-range zip, before they fill in the rest of the form. Same
+  check also runs defense-in-depth inside the calc button handler.
+- **Important: this is a pre-filter only, the existing live real
+  driving-distance check is completely unchanged** and remains the
+  actual final gate - verified this two-layer handoff works correctly
+  with Charlotte NC (passes the instant check, but the live OSRM check
+  correctly still routes it to a custom quote since real driving
+  distance is over 200mi).
+- Restored the state dropdown from GA/FL/SC back to the full 50 states
+  + DC (pulled from git history) - it no longer needs to approximate
+  distance now that the real zip list exists, and keeping it narrowed
+  would have blocked real in-range addresses (confirmed valid NC zips
+  that couldn't have been selected under the old GA/FL/SC-only dropdown).
+- Also added a `.gitignore` to the repo (there wasn't one at all before)
+  covering `.env`/`passwords/`/key files, per the standing rule that
+  every project repo needs one - a pre-existing gap, not new risk (no
+  secrets exist in this static site regardless).
+- Verified: Beverly Hills 90210 blocked instantly + at calc time;
+  Charleston SC 29401 (genuinely in range) completes normally; no
+  console errors.
+
+**Separately, not built - plan only:** Apple Calendar ↔ Google Calendar
+two-way sync, discussed and designed but explicitly not started -
+waiting on the user to confirm a few things with Julia first (Apple ID
+2FA status, whether mirrored events can show a "(synced)" tag, sync
+delay tolerance). See quoting-tool-architecture memory for the full
+plan and the real risks flagged (this touches her actual calendar data,
+higher stakes than anything else built for this project).
+
 **NEXT for the quoting tool:** get real prices for the `known_extras`
 catalog if/when Julia wants specific add-ons priced; revisit song pricing
-once the user confirms with Julia whether it's actually changing; build
-a real 200-mile ZIP-radius list to replace the GA/FL/SC state-dropdown
-approximation; build the "Book Now → accept + deposit" email flow (see
-quoting-tool-architecture memory - terms language, percentage deposit +
-cash-discount incentive confirmed, no payment processor yet so v1 skips
-live payment); build periodic functionality testing (a recurring check
-that pricing/distance/calendar/email/Formspree all still work, since
-right now nothing is monitored and breakage would only be caught by
-accident) - otherwise this feature is functionally complete and live.
+once the user confirms with Julia whether it's actually changing; expand
+the visitor's estimate email to itemize every selected phase clearly
+(currently one small gray "Includes: X, Y" line); build the "Book Now →
+accept + deposit" email flow (see quoting-tool-architecture memory -
+terms language, percentage deposit + cash-discount incentive confirmed,
+no payment processor yet so v1 skips live payment); build periodic
+functionality testing (a recurring check that pricing/distance/calendar/
+email/Formspree all still work, since right now nothing is monitored and
+breakage would only be caught by accident); build the Apple↔Google
+calendar sync once Julia answers the open questions above - otherwise
+this feature is functionally complete and live.
 
